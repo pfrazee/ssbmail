@@ -34,22 +34,12 @@ body {
 @import "node_modules/patchkit-selector/styles.less";
 
 // patchwork styles
-.logo {
-  font-size: 28px;
-  padding-left: 5px;
-  width: 160px;
-  font-weight: 100;
-  a {
-    color: #666;
-    &:hover {
-      text-decoration: none;
-      .rainbow;
-    }
-  }
-}
 .msg-list {
   width: 100%;
-  border-top: 1px solid #ddd;
+
+  .msg-list-items .toolbar {
+    padding: 0;
+  }
 }
 .msg-thread {
   max-width: 800px;

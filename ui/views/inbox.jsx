@@ -9,6 +9,18 @@ import Oneline from 'mx-msg-view/oneline'
 import DropdownBtn from 'patchkit-dropdown'
 import app from '../lib/app'
 
+class Toolbar extends React.Component {
+  render() {
+    return <div className="toolbar">
+      <div className="toolbar-fixed">
+        <div className="toolbar-inner">
+          <a className="toolbar-btn" href="#">Mark All Read</a>
+        </div>
+      </div>
+    </div>
+  }
+}
+
 export default class InboxPosts extends React.Component {
   getIndexName() {
     return ({
@@ -73,6 +85,7 @@ export default class InboxPosts extends React.Component {
           ref="list"
           threads
           showMissing
+          TopNav={Toolbar}
           ListItem={Oneline} listItemProps={{ userPic: true }}
           Thread={Thread} threadProps={{ suggestOptions: app.suggestOptions, channels: app.channels }}
           live={{ gt: [Date.now(), null] }}

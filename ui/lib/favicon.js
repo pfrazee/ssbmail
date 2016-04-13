@@ -39,20 +39,20 @@ function draw () {
 
   if (label) {
     // draw drop shadow
-    context.shadowColor = '#000'
+    context.shadowColor = '#FFF'
     context.shadowBlur = shadow
     context.shadowOffsetX = 0
     context.shadowOffsetY = 0
 
     // draw border
-    // context.fillStyle = '#000'
-    // context.fillText(label, xOffset, yOffset)
-    // context.fillText(label, xOffset + border, yOffset)
-    // context.fillText(label, xOffset, yOffset + border)
-    // context.fillText(label, xOffset + border, yOffset + border)
+    context.fillStyle = '#FFF'
+    context.fillText(label, xOffset, yOffset)
+    context.fillText(label, xOffset + border, yOffset)
+    context.fillText(label, xOffset, yOffset + border)
+    context.fillText(label, xOffset + border, yOffset + border)
 
     // draw label
-    context.fillStyle = '#FFF'
+    context.fillStyle = '#000'
     context.fillText(label,
       xOffset + (border / 2.0),
       yOffset + (border / 2.0)
