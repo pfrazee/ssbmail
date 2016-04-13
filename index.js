@@ -9,6 +9,9 @@ if(config.keys.curve === 'k256')
   throw new Error('k256 curves are no longer supported,'+
                   'please delete' + path.join(config.path, 'secret'))
 
+// config modifications
+config.friends.hops = 1 // disable foaf
+
 // validate the config
 var configOracle = require('./config')(config)
 if (configOracle.hasError()) {
