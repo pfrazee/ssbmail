@@ -1,0 +1,149 @@
+.sidenav {
+  width: 175px;
+  flex: 0 0 175px;
+
+  .heading {
+    margin: 15px 0 5px 10px;
+    font-weight: bold;
+    color: gray;
+    font-size: 12px;
+    text-transform: uppercase;
+
+    a {
+      color: #aaa;
+      &:hover {
+        color: gray;
+      }
+    }
+  }
+
+  .link {
+    border-left: 5px solid transparent;
+    padding-left: 15px;
+    a, .expander {
+      display: inline-block;
+      padding: 5px 3px;
+      color: #555;
+      cursor: pointer;
+      border-radius: 2px;
+    }
+    a:hover {
+      color: #1a86ff;
+      text-decoration: none;
+    }
+    &.thin {
+      font-weight: 300;
+      a {
+        color: gray;
+      }
+    }
+    .expander:hover {
+      background: #ddd;
+    }
+    &.selected {
+      border-color: #1a86ff;
+      a, .expander {
+        color: #1a86ff;
+      }
+    }
+    i { 
+      width: 15px;
+      text-align: center;
+    }
+    a i {
+      margin-right: 8px;
+      &.fa-newspaper-o {
+        font-size: 14px;
+      }
+    }
+  }
+  .sublinks {
+    padding-bottom: 10px;
+    .link {
+      padding-left: 26px;
+    }
+  }
+  .btn {
+    i {
+      width: 20px;
+      text-align: center;
+    }
+  }
+
+  hr {
+    margin: 10px 15px;
+  }
+}
+
+.leftnav {
+  .sidenav;
+  background: #fff;
+
+  .big-btn {
+    margin: 0 0 10px 15px;
+    padding: 8px 30px 8px 15px;
+    width: 86px;
+  }
+
+  .leftnav-composer {
+    position: absolute;
+    z-index: 1000;
+    background: #fff;
+    left: 175px;
+    top: 60px;
+    width: 660px;
+    border: 1px solid #ddd;
+  }
+}
+
+.rightnav {
+  .sidenav;
+  position: absolute;
+  right: 0;
+  z-index: 1;
+
+  .heading {
+    margin: 15px 10px 5px 0;
+  }
+
+  .link {
+    padding: 5px 0 0;
+    a {
+      color: gray;
+      font-weight: 300;
+    }
+  }
+
+  a.btn {
+    display: block;
+    margin: 10px 10px 0 0;
+    padding: 10px;
+  }
+  .dropdown {
+    margin-right: 10px;
+  }
+  hr {
+    margin: 30px 10px 30px 0;
+  }
+  .toolbar {
+    background: none;
+    border: 0;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    a {
+      color: #555;
+      font-size: 23px;
+      padding: 0 22px 0 0;
+    }
+    .user-pic img {
+      width: 32px;
+      height: 32px;
+      border-radius: 2px;
+    }
+  }
+}
+@media(max-width: 1000px) {
+  .rightnav {
+    display: none;
+  }
+}

@@ -1,0 +1,93 @@
+.toolbar {
+  background: #fff;
+  border-bottom: 1px solid #ccc;
+  font-weight: 300;
+  height: 28px;
+  padding: 5px;
+
+  .centered {
+    width: 645px;
+    margin: 0px auto; 
+    .tabs {
+      margin-left: 20px;
+    }
+  }
+
+  &.floating {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 0;
+    z-index: 1000;
+    background: rgba(238, 238, 238, 0.9);
+
+    .fa-commenting-o {
+      position: relative;
+      top: -1px;
+    }
+  }
+
+  .divider {
+    display: inline;
+    width: 1px;
+    border-left: 1px solid #ccc;
+    margin: 0 12px;
+  }
+
+  .btn {
+    padding: 0 10px;
+    border-radius: 0;
+    box-shadow: none;
+    background: none;
+    line-height: 1.9;
+    &:hover {
+      color: #459EFF;
+    }
+  }
+  .ctrl {
+    display: inline-block;
+    padding: 0 12px;
+    font-size: 21px;
+    text-align: center;
+    color: rgb(104, 120, 144);
+    transition: color 0.2s;
+
+    &:hover, &.selected {
+      color: #459EFF;
+      text-decoration: none;
+    }
+
+    .count {
+      display: inline-block;
+      position: relative;
+      top: -10px;
+      font-size: 12px;
+      font-weight: normal;
+    }
+  }
+  .back, .home {
+    width: 40px;
+    padding: 0;
+    font-size: 23px;
+    position: relative;
+    top: -1px;
+  }
+
+  .dipswitch {
+    margin: 0 5px;
+    &:hover {
+      color: #459EFF;
+    }
+  }
+}
+
+.light-toolbar {
+  a {
+    margin: 3px 16px 0 0;
+    color: gray;
+    transition: color 0.2s;
+  }
+  &:hover a {
+    color: #555;
+  }
+}

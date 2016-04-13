@@ -1,0 +1,82 @@
+body {
+  background: #eee;
+}
+
+@import "node_modules/patchkit-base-styles/all.less";
+@import "elevations.less"; // TODO remove
+@import "layout.less";
+
+@import "animations/throb.less";
+@import "animations/explode.less";
+
+// components
+@import "node_modules/patchkit-rainbow-text/styles.less";
+@import "node_modules/patchkit-tabs/styles.less";
+@import "node_modules/patchkit-dropdown/styles.less";
+@import "node_modules/patchkit-channel-list/styles.less";
+@import "node_modules/patchkit-search-palette/styles.less";
+@import "node_modules/patchkit-mdl-spinner/styles.less";
+
+// message rendering
+@import "node_modules/patchkit-niceraw/styles.less";
+@import "node_modules/patchkit-markdown/styles.less";
+@import "node_modules/mx-msg-view/styles.less";
+@import "node_modules/patchkit-msg-list/styles.less";
+@import "node_modules/patchkit-flat-msg-thread/styles.less";
+@import "node_modules/patchkit-post-composer/styles.less";
+
+// modals
+@import "node_modules/patchkit-stepped-progress-bar/styles.less";
+@import "node_modules/patchkit-modal/styles.less";
+
+// form elements
+@import "node_modules/patchkit-image-uploader/styles.less";
+@import "node_modules/patchkit-selector/styles.less";
+
+// patchwork styles
+.logo {
+  font-size: 28px;
+  padding-left: 5px;
+  width: 160px;
+  font-weight: 100;
+  a {
+    color: #666;
+    &:hover {
+      text-decoration: none;
+      .rainbow;
+    }
+  }
+}
+.msg-list {
+  width: 100%;
+  border-top: 1px solid #ddd;
+}
+.msg-thread {
+  max-width: 800px;
+  margin: 5px;
+  .thread-toolbar {
+    margin: 1px 0;
+  }
+}
+
+@import "com/toolbar.less";
+@import "com/suggest-box.less";
+@import "com/user/info.less";
+@import "com/user/profile.less";
+@import "com/user/summary.less";
+@import "com/issues.less";
+@import "com/findbar.less";
+@import "com/topnav.less";
+@import "com/sidenavs.less";
+
+@import "transitions/slideup.less";
+@import "transitions/fade.less";
+
+@import "views/data.less";
+@import "views/channels.less";
+@import "views/msg.less";
+@import "views/composer.less";
+@import "views/contacts.less";
+@import "views/profile.less";
+@import "views/sync.less";
+@import "views/search.less";
