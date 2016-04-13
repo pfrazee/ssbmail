@@ -2,7 +2,7 @@
 import React from 'react'
 import { Link } from 'react-router'
 import LocalStoragePersistedComponent from 'patchkit-ls-persisted'
-import Composer from 'patchkit-post-composer'
+import Composer from 'mx-composer'
 import Issues from './issues'
 import app from '../lib/app'
 import u from 'patchkit-util'
