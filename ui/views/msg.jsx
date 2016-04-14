@@ -11,7 +11,7 @@ class Toolbar extends React.Component {
   render() {
     return <div className="toolbar">
       <div className="toolbar-inner">
-        <a className="btn toolbar-btn" href="#" onClick={this.props.onBack}>Back</a>
+        <a className="btn toolbar-btn" href="#" onClick={this.props.onBack}><i className="fa fa-angle-left" /> Inbox</a>
         <a className="btn toolbar-btn" href="#" onClick={this.props.onMarkUnread}>Mark Unread</a>
       </div>
     </div>
