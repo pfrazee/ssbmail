@@ -12,7 +12,7 @@ class Toolbar extends React.Component {
   render() {
     return <div className="toolbar">
       <div className="toolbar-inner">
-        <a className="toolbar-btn" href="#">Mark All Read</a>
+        <a className="btn toolbar-btn" href="#">Mark All Read</a>
       </div>
     </div>
   }
