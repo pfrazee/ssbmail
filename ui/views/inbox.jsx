@@ -3,8 +3,7 @@ import React from 'react'
 import { Link } from 'react-router'
 import TopNav from '../com/topnav'
 import LeftNav from '../com/leftnav'
-import MsgList from 'patchkit-msg-list'
-import Thread from 'patchkit-flat-msg-thread'
+import MsgList from 'mx-msg-list'
 import Oneline from 'mx-msg-view/oneline'
 import DropdownBtn from 'patchkit-dropdown'
 import app from '../lib/app'
@@ -12,10 +11,8 @@ import app from '../lib/app'
 class Toolbar extends React.Component {
   render() {
     return <div className="toolbar">
-      <div className="toolbar-fixed">
-        <div className="toolbar-inner">
-          <a className="toolbar-btn" href="#">Mark All Read</a>
-        </div>
+      <div className="toolbar-inner">
+        <a className="toolbar-btn" href="#">Mark All Read</a>
       </div>
     </div>
   }
@@ -81,17 +78,18 @@ export default class InboxPosts extends React.Component {
       <TopNav />
       <div className="flex">
         <LeftNav location={this.props.location} composerProps={{ isPublic: false }} />
-        <MsgList
-          ref="list"
-          threads
-          showMissing
-          TopNav={Toolbar}
-          ListItem={Oneline} listItemProps={{ userPic: true }}
-          Thread={Thread} threadProps={{ suggestOptions: app.suggestOptions, channels: app.channels }}
-          live={{ gt: [Date.now(), null] }}
-          emptyMsg={<div>Your inbox is empty.</div>}
-          source={source}
-          cursor={this.cursor} />
+        <div className="flex-fill">
+          <Toolbar />
+          <MsgList
+            ref="list"
+            threads
+            showMissing
+            ListItem={Oneline} listItemProps={{ userPic: true }}
+            live={{ gt: [Date.now(), null] }}
+            emptyMsg={<div>Your inbox is empty.</div>}
+            source={source}
+            cursor={this.cursor} />
+        </div>
       </div>
     </div>
   }

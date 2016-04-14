@@ -1,8 +1,7 @@
 'use babel'
 import React from 'react'
-import MsgList from 'patchkit-msg-list'
+import MsgList from 'mx-msg-list'
 import Oneline from 'mx-msg-view/oneline'
-import Thread from 'patchkit-flat-msg-thread'
 import TopNav from '../com/topnav'
 import LeftNav from '../com/leftnav'
 import app from '../lib/app'
@@ -18,8 +17,7 @@ export default class Data extends React.Component {
         <LeftNav location={this.props.location} composerProps={{ isPublic: true }} />
         <MsgList
           forceRaw
-          ListItem={Oneline} listItemProps={{noReplies: true}}
-          Thread={Thread} threadProps={{ suggestOptions: app.suggestOptions, channels: app.channels }}
+          ListItem={Oneline}
           source={source}
           live={{ gt: Date.now() }} />
       </div>

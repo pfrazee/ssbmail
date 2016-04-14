@@ -2,9 +2,8 @@
 import React from 'react'
 import TopNav from '../com/topnav'
 import LeftNav from '../com/leftnav'
-import MsgList from 'patchkit-msg-list'
+import MsgList from 'mx-msg-list'
 import Card from 'mx-msg-view/card'
-import Thread from 'patchkit-flat-msg-thread'
 import app from '../lib/app'
 
 export default class Search extends React.Component {
@@ -28,7 +27,6 @@ export default class Search extends React.Component {
           dateDividers
           batchLoadAmt={5}
           ListItem={Card} listItemProps={{ listView: true }}
-          Thread={Thread} threadProps={{ suggestOptions: app.suggestOptions, channels: app.channels }}
           emptyMsg="No results found."
           source={source}
           cursor={cursor} />

@@ -10,7 +10,8 @@ if(config.keys.curve === 'k256')
                   'please delete' + path.join(config.path, 'secret'))
 
 // config modifications
-config.friends.hops = 1 // disable foaf
+config.replication = config.replication || {}
+config.replication.hops = 1 // disable foaf
 
 // validate the config
 var configOracle = require('./config')(config)
