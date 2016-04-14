@@ -27,6 +27,7 @@ export default class Layout extends React.Component {
     app.on('find:next', this.doFind.bind(this, true))
     app.on('find:previous', this.doFind.bind(this, false))
     app.on('open:msg', this.openMsg.bind(this))
+    app.on('open:contact', this.openContact.bind(this))
   }
   componentWillReceiveProps() {
     // update state on view changes
@@ -47,6 +48,10 @@ export default class Layout extends React.Component {
     if (msgKey.key)
       msgKey = msgKey.key
     app.history.pushState(null, '/msg/' + encodeURIComponent(msgKey))
+  }
+
+  openContact(userId) {
+    app.history.pushState(null, '/profile/' + encodeURIComponent(userId))
   }
 
   focusFind() {

@@ -41,7 +41,7 @@ export default class Msg extends React.Component {
         <div className="flex-fill">
           <Toolbar {...toolbarHandlers} />
           <VerticalFilledContainer id="msg-thread-vertical">
-            <Thread id={id} ref="thread" suggestOptions={app.suggestOptions} channels={app.channels} live />
+            <Thread id={id} ref="thread" suggestOptions={app.suggestOptions} live />
           </VerticalFilledContainer>
         </div>
       </div>
