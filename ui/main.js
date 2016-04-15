@@ -28,6 +28,13 @@ app.fetchLatestState(function () {
   window.removeEventListener('error', window.loadErrorHandler)
 })
 
+// choose a random title, for fun
+var titles = [
+  'make mail great again',
+  'we have the best mail'
+]
+document.title = 'Mx - ' + titles[(Math.random() * titles.length)|0]
+
 // Handlers
 // ========
 

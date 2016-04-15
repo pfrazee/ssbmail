@@ -3,6 +3,7 @@ module.exports = {
 
   getIndexCounts: 'async',
   createInboxStream: 'source',
+  createCertStream: 'source',
   createNoticeStream: 'source',
   createSearchStream: 'source',
 

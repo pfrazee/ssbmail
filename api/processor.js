@@ -33,13 +33,12 @@ module.exports = function (sbot, db, state, emit) {
         var toself = link.link === msg.value.author
         if (toself) updateSelfContact(msg.value.author, msg)
         else        updateOtherContact(msg.value.author, link.link, msg)
-
-        // notices index: add follows or blocks
-        // if (link.link === sbot.id && ('following' in msg.value.content || 'blocking' in msg.value.content)) {
-        //   state.notices.sortedUpsert(ts(msg), msg.key)
-        //   emit('index-change', { index: 'notices' })
-        // }
       })
+      // certs index: add follows
+      if ('following' in msg.value.content) {
+        state.certs.sortedUpsert(msg.received, msg.key)
+        emit('index-change', { index: 'certs' })
+      }
     },
 
     about: function (msg) {

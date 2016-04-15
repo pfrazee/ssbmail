@@ -29,6 +29,7 @@ exports.init = function (sbot, opts) {
     // indexes (lists of {key:, ts:})
     mymsgs: [],
     inbox: u.index('inbox'),
+    certs: u.index('certs'),
     notices: u.index('notices'),
 
     // views
@@ -116,6 +117,7 @@ exports.init = function (sbot, opts) {
   }
 
   api.createInboxStream = indexStreamFn(state.inbox)
+  api.createCertStream = indexStreamFn(state.certs)
   api.createNoticeStream = indexStreamFn(state.notices)
   api.createSearchStream = function (opts) {
     opts = opts || {}

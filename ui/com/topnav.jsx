@@ -48,6 +48,7 @@ export default class TopNav extends React.Component {
         </div>
         <div className="ctrls">
           <TopNav.IconLink to="/notices" icon="hand-peace-o" count={app.indexCounts.noticesUnread} title="Digs on your posts" hint="bottom" />
+          <TopNav.IconLink to="/add-contact" icon="info-circle" title="Your contact info" hint="bottom" />
           <TopNav.IconLink to="/add-contact" icon="user-plus" title="Add contact" hint="bottom" />
         </div>
       </div>
