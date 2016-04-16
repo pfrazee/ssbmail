@@ -1,9 +1,35 @@
+#profile {
+  .profile-header {
+    display: flex;
+    background: #fff;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
 
-@media(min-width: 1000px) {
-  #profile {
-    & > .flex > .flex-fill,
-    #msg-list-infinite > .flex > .flex-fill {
-      margin: 0 200px;
+    .user-pic {
+      img {
+        display: block;
+        width: 120px;
+        border-radius: 2px;
+      }
+    }
+    .info {
+      flex: 1;
+      padding: 0 20px;
+      h1 {
+        margin: 0;
+        i {
+          font-size: 15px;
+        }
+      }
+      div {
+        white-space: pre;
+      }
+      .btns {
+        margin-bottom: 5px;
+        .btn {
+          margin-right: 5px;
+        }
+      }
     }
   }
 }

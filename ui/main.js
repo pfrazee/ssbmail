@@ -31,7 +31,7 @@ app.fetchLatestState(function () {
 // choose a random title, for fun
 var titles = [
   'make mail great again',
-  'we have the best mail'
+  'we have the best mails'
 ]
 document.title = 'Mx - ' + titles[(Math.random() * titles.length)|0]
 

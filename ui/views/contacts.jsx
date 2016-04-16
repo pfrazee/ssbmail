@@ -14,7 +14,10 @@ class Toolbar extends React.Component {
     return <div className="toolbar">
       <div className="toolbar-inner">
         <a className="btn toolbar-btn" href="#">Add New Contact</a>
-        <a className="btn toolbar-btn" href="#">Get Your Contact Info</a>
+        <div className="btn-group">
+          <a className="btn toolbar-btn" href="#">Get Your Contact Info</a>
+          <a className="btn toolbar-btn btn-group-last" href="#">Open Your Profile</a>
+        </div>
       </div>
     </div>
   }

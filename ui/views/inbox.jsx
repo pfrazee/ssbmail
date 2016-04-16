@@ -84,7 +84,7 @@ export default class InboxPosts extends React.Component {
             ref="list"
             threads
             showMissing
-            ListItem={Oneline} listItemProps={{ userPic: true }}
+            ListItem={Oneline}
             live={{ gt: [Date.now(), null] }}
             emptyMsg={<div>Your inbox is empty.</div>}
             source={source}

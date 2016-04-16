@@ -2,7 +2,7 @@
 import React from 'react'
 import MsgList from 'mx-msg-list'
 import Event from 'mx-msg-view/event'
-import DropdownBtn from 'patchkit-dropdown'
+import DropdownSelectorBtn from 'patchkit-dropdown-selector'
 import mlib from 'ssb-msgs'
 import TopNav from '../com/topnav'
 import LeftNav from '../com/leftnav'
@@ -17,6 +17,11 @@ const cursor = msg => {
     return [msg.ts, false]
 }
 
+const FILTER_OPTS = [
+  { label: 'All', value: 'all' },
+  { label: 'You', value: 'you' }
+]
+
 const filterFns = { 
   all: msg => true,
   you: msg => {
@@ -30,24 +35,9 @@ const filterFns = {
 
 class Toolbar extends React.Component {
   render() {
-    var currentFilter = this.props.currentFilter
-    
-    const o = (label, value) => {
-      return { 
-        label: <span><i className={'fa fa-'+(currentFilter==value?'check-circle-o':'circle-thin')}/> {label}</span>,
-        value: value
-      }
-    }
-    const FILTER_OPTS = [
-      o('All', 'all'),
-      o('You', 'you')
-    ]
-
     return <div className="toolbar">
       <div className="toolbar-inner">
-        <DropdownBtn className="btn toolbar-btn" items={FILTER_OPTS} onSelect={this.props.onSelectFilter}>
-          Filter: {currentFilter} <i className="fa fa-angle-down" />
-        </DropdownBtn>
+        <DropdownSelectorBtn className="btn toolbar-btn" items={FILTER_OPTS} initValue={this.props.currentFilter} label="Filter" onSelect={this.props.onSelectFilter} />
       </div>
     </div>
   }
@@ -59,11 +49,9 @@ export default class Feed extends React.Component {
     this.state = { filter: 'all' }
   }
   onSelectFilter(filter) {
-    console.log('select', filter)
     this.setState({ filter: filter })
   }
   render() {
-    console.log('filter', this.state.filter, filterFns[this.state.filter])
     return <div id="feed" key={this.state.filter}>
       <TopNav />
       <div className="flex">
