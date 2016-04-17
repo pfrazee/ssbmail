@@ -1,10 +1,10 @@
-
 import React from 'react'
 import VerticalFilledContainer from 'patchkit-vertical-filled'
 import { UserPic, UserLinks } from 'patchkit-links'
 import mlib from 'ssb-msgs'
 import TopNav from '../com/topnav'
 import LeftNav from '../com/leftnav'
+import DropdownBtn from 'patchkit-dropdown'
 import DropdownSelectorBtn from 'patchkit-dropdown-selector'
 import MsgList from 'mx-msg-list'
 import MsgOneline from 'mx-msg-view/oneline'
@@ -35,16 +35,33 @@ class Toolbar extends React.Component {
   }
 }
 
+class FollowBtn extends React.Component {
+  render() {
+    var label, opts
+    const name = u.getName(app.users, this.props.id)
+
+    const onSelect = b => () => {
+      app.ssb.publish({ type: 'contact', contact: this.props.id, following: b }, function (err) {
+        if (err) throw err
+        app.fetchLatestState()
+        app.emit('notice', (b ? 'You are now following ' : 'You are no longer following ') + name)
+      })
+    }
+
+    if (social.follows(app.users, app.user.id, this.props.id)) {
+      label = 'Following'
+      opts = [{ label: <span><i className="fa fa-user-times"/> Unfollow {name}</span>, onSelect: onSelect(false) }]
+    } else {
+      label = 'Not Following'
+      opts = [{ label: <span><i className="fa fa-user-plus"/> Follow {name}</span>, onSelect: onSelect(true) }]
+    }
+    return <DropdownBtn className="btn highlighted" items={opts}>{label} <i className="fa fa-angle-down" /></DropdownBtn>
+  }
+}
+
 const cursor = msg => {
   if (msg)
     return [msg.ts, false]
-}
-
-function findLink (links, id) {
-  for (var i=0; i < (links ? links.length : 0); i++) {
-    if (links[i].link === id)
-      return links[i]
-  }
 }
 
 export default class Profile extends React.Component {
@@ -96,7 +113,7 @@ export default class Profile extends React.Component {
             <div className="info">
               <h1>{name} <SyncStatus users={app.users} a={id} b={app.user.id} /></h1>
               <div className="btns">
-                <a className="btn highlighted" href="#">Following <i className="fa fa-angle-down" /></a>
+                <FollowBtn id={id} />
                 <a className="btn highlighted" href="#">New Message</a>
               </div>
               <div>Followed by: <UserLinks limit={2} ids={social.followedFollowers(app.users, app.user.id, id)} /></div>
@@ -107,5 +124,12 @@ export default class Profile extends React.Component {
         </div>
       </div>
     </div>
+  }
+}
+
+function findLink (links, id) {
+  for (var i=0; i < (links ? links.length : 0); i++) {
+    if (links[i].link === id)
+      return links[i]
   }
 }
