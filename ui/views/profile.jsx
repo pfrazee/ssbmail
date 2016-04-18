@@ -59,11 +59,6 @@ class FollowBtn extends React.Component {
   }
 }
 
-const cursor = msg => {
-  if (msg)
-    return [msg.ts, false]
-}
-
 export default class Profile extends React.Component {
   constructor(props) {
     super(props)
@@ -77,7 +72,9 @@ export default class Profile extends React.Component {
   render() {
     const id = this.props.params && this.props.params.id
     const name = u.getName(app.users, id)
+    const isYou = id == app.user.id
 
+    const cursor = msg => { if (msg) return [msg.ts, false] }
     const msgFilter = msg => !!findLink(mlib.links(msg.value.content.recps), id)
     const contactFilter = id2 => social.follows(app.users, id, id2)
     const sortByName = (a, b) => u.getName(app.users, a).localeCompare(u.getName(app.users, b))
@@ -112,12 +109,14 @@ export default class Profile extends React.Component {
             <UserPic id={id} />
             <div className="info">
               <h1>{name} <SyncStatus users={app.users} a={id} b={app.user.id} /></h1>
-              <div className="btns">
-                <FollowBtn id={id} />
-                <a className="btn highlighted" href="#">New Message</a>
-              </div>
+              { isYou
+                ? <div>This is you!</div>
+                : <div className="btns">
+                    <FollowBtn id={id} />
+                    <a className="btn highlighted" href="#">New Message</a>
+                  </div> }
               <div>Followed by: <UserLinks limit={2} ids={social.followedFollowers(app.users, app.user.id, id)} /></div>
-              <div>Verified by: none.</div>
+              <div>Verified by:</div>
             </div>
           </div>
           {view}
