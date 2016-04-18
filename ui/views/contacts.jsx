@@ -6,6 +6,8 @@ import LeftNav from '../com/leftnav'
 import ContactList from 'mx-contact-list'
 import Oneline from 'mx-contact-view/oneline'
 import DropdownSelectorBtn from 'patchkit-dropdown-selector'
+import ModalSingle from 'patchkit-modal/single'
+import AddContactForm from '../com/form/add-contact'
 import u from 'patchkit-util'
 import social from 'patchkit-util/social'
 import app from '../lib/app'
@@ -21,13 +23,26 @@ const filterFns = {
 }
 
 class Toolbar extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { 
+      isAddContactOpen: false
+    }
+  }
+
+  onToggleAddContact(e) {
+    if (e) e.preventDefault()
+    this.setState({ isAddContactOpen: !this.state.isAddContactOpen })
+  }
+
   render() {
     return <div className="toolbar">
       <div className="toolbar-inner">
         <DropdownSelectorBtn className="btn toolbar-btn" items={FILTER_OPTS} initValue={this.props.currentFilter} label="View" onSelect={this.props.onSelectFilter} />
         <div className="toolbar-divider"/>
-        <a className="btn toolbar-btn" href="#">Add New Contact</a>
+        <a className="btn toolbar-btn" href="#" onClick={this.onToggleAddContact.bind(this)}>Add New Contact</a>
         <a className="btn toolbar-btn" href={'#/profile/'+encodeURIComponent(app.user.id)}>Open Your Profile</a>
+        <ModalSingle className="center-block" nextLabel="Lookup" Form={AddContactForm} isOpen={this.state.isAddContactOpen} onClose={this.onToggleAddContact.bind(this)} />
       </div>
     </div>
   }

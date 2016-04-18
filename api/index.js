@@ -278,15 +278,16 @@ exports.init = function (sbot, opts) {
       // validate id
       if (!ref.isFeedId(id))
         valid = false
-
-      // parse addresses
-      addrs = addrs
-        .map(function (addr) {
-          addr = addr.split(':')
-          if (addr.length === 3)
-            return { host: addr[0], port: +addr[1], key: addr[2] }
-        })
-        .filter(Boolean)
+      else {
+        // parse addresses
+        addrs = addrs
+          .map(function (addr) {
+            addr = addr.split(':')
+            if (addr.length === 3)
+              return { host: addr[0], port: +addr[1], key: addr[2] }
+          })
+          .filter(Boolean)
+      }
     } else
       valid = false
 
@@ -300,8 +301,10 @@ exports.init = function (sbot, opts) {
     search(addrs.concat(sbot.gossip.peers()))
     function search (peers) {
       var peer = peers.pop()
-      if (!peer)
+      if (!peer) {
+        eventPush.push({ type: 'failure' })
         return eventPush.end()
+      }
 
       // connect to the peer
       eventPush.push({ type: 'connecting', addr: peer })      
@@ -311,10 +314,11 @@ exports.init = function (sbot, opts) {
           return search(peers)
         }
         // try a sync
+        eventPush.push({ type: 'syncing', addr: peer })
         sync(rpc, function (err, seq) { 
           if (seq > 0) {
             // success!
-            eventPush.push({ type: 'finished', seq: seq })
+            eventPush.push({ type: 'success', id: id, seq: seq })
             eventPush.end()
           } else
             search(peers) // try next
@@ -325,7 +329,6 @@ exports.init = function (sbot, opts) {
     function sync (rpc, cb) {
       // fetch the feed
       var seq
-      eventPush.push({ type: 'syncing', id: id })
       pull(
         rpc.createHistoryStream({ id: id, keys: false }),
         pull.through(function (msg) {

@@ -23,7 +23,7 @@ export default class Prompt extends React.Component {
       <h1>{namePossessive} Contact Info</h1>
       <pre>{contactInfo}</pre>
       <div className="flex">
-        <p className="flex-fill" style={{margin:0}}>Send this code to anybody you want to follow {name}.</p>
+        <p className="flex-fill" style={{margin:0}}>Send this code to anybody that wants to follow {name}.</p>
         <ClipboardBtn component="a" className="hint--left" data-clipboard-text={contactInfo} data-hint={hint} onSuccess={()=>this.setState({ isCopied: true })}>
           <i className="fa fa-clipboard" />
         </ClipboardBtn>

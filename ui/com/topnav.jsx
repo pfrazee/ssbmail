@@ -3,8 +3,10 @@ import React from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import SearchPalette from 'patchkit-search-palette'
+import ModalSingle from 'patchkit-modal/single'
 import Alert from './alert'
 import ContactInfoForm from './form/contact-info'
+import AddContactForm from './form/add-contact'
 import app from '../lib/app'
 import u from '../lib/util'
 import { getResults } from '../lib/search'
@@ -12,7 +14,10 @@ import { getResults } from '../lib/search'
 export default class TopNav extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { isContactInfoOpen: false }
+    this.state = { 
+      isContactInfoOpen: false,
+      isAddContactOpen: false
+    }
 
     // listen for events that should update our state
     this._focusSearch = this.focusSearch.bind(this)
@@ -28,6 +33,9 @@ export default class TopNav extends React.Component {
 
   onToggleContactInfo() {
     this.setState({ isContactInfoOpen: !this.state.isContactInfoOpen })
+  }
+  onToggleAddContact() {
+    this.setState({ isAddContactOpen: !this.state.isAddContactOpen })
   }
 
   static IconLink(props) {
@@ -57,10 +65,11 @@ export default class TopNav extends React.Component {
         <div className="ctrls">
           {''/*TODO <TopNav.IconLink to="/notices" icon="hand-peace-o" count={app.indexCounts.noticesUnread} title="Digs on your posts" hint="bottom" />*/}
           <TopNav.IconLink do={this.onToggleContactInfo.bind(this)} icon="info-circle" title="Your contact info" hint="bottom" />
-          <TopNav.IconLink to="#/add-contact" icon="user-plus" title="Add contact" hint="bottom" />
+          <TopNav.IconLink do={this.onToggleAddContact.bind(this)} icon="user-plus" title="Add contact" hint="bottom" />
         </div>
       </div>
       <Alert className="center-block" Form={ContactInfoForm} formProps={{ userId: app.user.id }} isOpen={this.state.isContactInfoOpen} onClose={this.onToggleContactInfo.bind(this)} />
+      <ModalSingle className="center-block" nextLabel="Lookup" Form={AddContactForm} isOpen={this.state.isAddContactOpen} onClose={this.onToggleAddContact.bind(this)} />
     </div>
   }
 }
