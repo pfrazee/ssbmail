@@ -15,14 +15,15 @@ export default class Prompt extends React.Component {
   }
 
   render() {
-    const name = this.props.userId == app.user.id ? 'Your' : (pu.getName(app.users, this.props.userId)+'\'s')
+    const name = this.props.userId == app.user.id ? 'you' : pu.getName(app.users, this.props.userId)
+    const namePossessive = this.props.userId == app.user.id ? 'Your' : (pu.getName(app.users, this.props.userId)+'\'s')
     const contactInfo = u.getUserContactInfo(this.props.userId)
     const hint = this.state.isCopied ? 'Copied!' : 'Copy to clipboard'
     return <div className="contact-info-form">
-      <h1>{name} Contact Info</h1>
+      <h1>{namePossessive} Contact Info</h1>
       <pre>{contactInfo}</pre>
       <div className="flex">
-        <p className="flex-fill" style={{margin:0}}>Send this code to anybody you want to contact you.</p>
+        <p className="flex-fill" style={{margin:0}}>Send this code to anybody you want to follow {name}.</p>
         <ClipboardBtn component="a" className="hint--left" data-clipboard-text={contactInfo} data-hint={hint} onSuccess={()=>this.setState({ isCopied: true })}>
           <i className="fa fa-clipboard" />
         </ClipboardBtn>
