@@ -21,7 +21,7 @@ export default class Notices extends React.Component {
           ref="list"
           threads
           dateDividers
-          ListItem={Notification}
+          ListItem={Card}
           live={{ gt: [Date.now(), null] }}
           emptyMsg="Nobody has dug any of your posts yet. They will, though!"
           source={app.ssb.patchwork.createNoticeStream}

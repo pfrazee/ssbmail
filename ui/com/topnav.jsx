@@ -33,7 +33,8 @@ export default class TopNav extends React.Component {
   }
 
   render() {
-    const npubs = 0 // TODO
+    const npubs = 1 // TODO
+    const pubsLabel = npubs === 0 ? ' offline' : <i className="fa fa-circle good-color" />
 
     return <div className="topnav">
       <div className="flex topnav-bar">
@@ -44,10 +45,10 @@ export default class TopNav extends React.Component {
           </div>
         </div>
         <div className={`pubs ${npubs>0?'online':''}`}>
-          <TopNav.IconLink to="/sync" icon="laptop" title={`You are ${npubs>0?'online':'offline'}`} hint="bottom" label={` ${npubs>0?npubs:'offline'}`} />
+          <TopNav.IconLink to="/sync" icon="laptop" title={`You are ${npubs>0?'online':'offline'}`} hint="bottom" label={pubsLabel} />
         </div>
         <div className="ctrls">
-          <TopNav.IconLink to="/notices" icon="hand-peace-o" count={app.indexCounts.noticesUnread} title="Digs on your posts" hint="bottom" />
+          {''/*TODO <TopNav.IconLink to="/notices" icon="hand-peace-o" count={app.indexCounts.noticesUnread} title="Digs on your posts" hint="bottom" />*/}
           <TopNav.IconLink to="/add-contact" icon="info-circle" title="Your contact info" hint="bottom" />
           <TopNav.IconLink to="/add-contact" icon="user-plus" title="Add contact" hint="bottom" />
         </div>
