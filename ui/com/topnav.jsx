@@ -2,14 +2,17 @@
 import React from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
-import app from '../lib/app'
 import SearchPalette from 'patchkit-search-palette'
-import u from 'patchkit-util'
+import Alert from './alert'
+import ContactInfoForm from './form/contact-info'
+import app from '../lib/app'
+import u from '../lib/util'
 import { getResults } from '../lib/search'
 
 export default class TopNav extends React.Component {
   constructor(props) {
     super(props)
+    this.state = { isContactInfoOpen: false }
 
     // listen for events that should update our state
     this._focusSearch = this.focusSearch.bind(this)
@@ -23,17 +26,21 @@ export default class TopNav extends React.Component {
      this.refs.search.focus()
   }
 
+  onToggleContactInfo() {
+    this.setState({ isContactInfoOpen: !this.state.isContactInfoOpen })
+  }
+
   static IconLink(props) {
     const cls = classNames(props.className||'', 'ctrl flex-fill', props.hint ? ('hint--'+props.hint) : '')
     const count = typeof props.count !== 'undefined' ? <div className="count">{props.count}</div> : ''
-    return <Link className={cls} to={props.to} data-hint={props.title}>
+    return <a className={cls} to={props.to} onClick={props.do} data-hint={props.title}>
       <i className={'fa fa-'+props.icon} />
       <span className="label">{props.label}</span> {count}
-    </Link>    
+    </a>    
   }
 
   render() {
-    const npubs = 1 // TODO
+    const npubs = u.getUserPubs(app.user.id).filter(u.isActivePeer).length
     const pubsLabel = npubs === 0 ? ' offline' : <i className="fa fa-circle good-color" />
 
     return <div className="topnav">
@@ -45,14 +52,15 @@ export default class TopNav extends React.Component {
           </div>
         </div>
         <div className={`pubs ${npubs>0?'online':''}`}>
-          <TopNav.IconLink to="/sync" icon="laptop" title={`You are ${npubs>0?'online':'offline'}`} hint="bottom" label={pubsLabel} />
+          <TopNav.IconLink to="#/sync" icon="laptop" title={`You are ${npubs>0?'online':'offline'}`} hint="bottom" label={pubsLabel} />
         </div>
         <div className="ctrls">
           {''/*TODO <TopNav.IconLink to="/notices" icon="hand-peace-o" count={app.indexCounts.noticesUnread} title="Digs on your posts" hint="bottom" />*/}
-          <TopNav.IconLink to="/add-contact" icon="info-circle" title="Your contact info" hint="bottom" />
-          <TopNav.IconLink to="/add-contact" icon="user-plus" title="Add contact" hint="bottom" />
+          <TopNav.IconLink do={this.onToggleContactInfo.bind(this)} icon="info-circle" title="Your contact info" hint="bottom" />
+          <TopNav.IconLink to="#/add-contact" icon="user-plus" title="Add contact" hint="bottom" />
         </div>
       </div>
+      <Alert className="center-block" Form={ContactInfoForm} formProps={{ userId: app.user.id }} isOpen={this.state.isContactInfoOpen} onClose={this.onToggleContactInfo.bind(this)} />
     </div>
   }
 }

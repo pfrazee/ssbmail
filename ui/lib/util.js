@@ -2,6 +2,44 @@ var ip = require('ip')
 var social = require('patchkit-util/social')
 var app = require('./app')
 
+var getPeerData =
+exports.getPeerData = function (id) {
+  // try to find the ID in the peerlist, and see if it's a public peer if so
+  for (var i=0; i < app.peers.length; i++) {
+    var peer = app.peers[i]
+    if (peer.key === id && !ip.isPrivate(peer.host))
+      return peer
+  }
+  return false
+}
+
+exports.isPeer = function (id) {
+  return !!getPeerData(id)
+}
+
+// has the peer has been successfully connecting or not?
+// (not super precise but hey)
+var isActivePeer =
+exports.isActivePeer = function (peer) {
+  if (typeof peer == 'string') // is an id
+    peer = getPeerData(peer) // lookup
+  return peer && peer.duration && peer.duration.count > peer.failure
+}
+
+var getUserPubs =
+exports.getUserPubs = function (id) {
+  return app.peers.filter(peer => !ip.isPrivate(peer.host) && social.follows(app.users, peer.key, id))
+}
+
+window.getUserContactInfo =
+exports.getUserContactInfo = function (id) {
+  id = id || app.user.id
+  var pubs = getUserPubs(id).filter(isActivePeer)
+  if (pubs.length > 0)
+    return id + '[via]' + pubs[0].host + ':' + pubs[0].port + ':' + pubs[0].key
+  return id
+}
+
 exports.getPubStats = function (peers) {
   var membersof=0, membersofActive=0, membersofUntried=0, connected=0
   ;(peers||app.peers||[]).forEach(function (peer) {

@@ -4,6 +4,8 @@ import { UserPic, UserLinks } from 'patchkit-links'
 import mlib from 'ssb-msgs'
 import TopNav from '../com/topnav'
 import LeftNav from '../com/leftnav'
+import Alert from '../com/alert'
+import ContactInfoForm from '../com/form/contact-info'
 import DropdownBtn from 'patchkit-dropdown'
 import DropdownSelectorBtn from 'patchkit-dropdown-selector'
 import MsgList from 'mx-msg-list'
@@ -22,15 +24,26 @@ const VIEW_OPTS = [
 ]
 
 class Toolbar extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { isContactInfoOpen: false }
+  }
+
+  onToggleContactInfo(e) {
+    if (e) e.preventDefault()
+    this.setState({ isContactInfoOpen: !this.state.isContactInfoOpen })
+  }
+
   render() {
     return <div className="toolbar">
       <div className="toolbar-inner">
         <a className="btn toolbar-btn" href="#/contacts"><i className="fa fa-angle-left"/> Contacts</a>
         <DropdownSelectorBtn className="btn toolbar-btn" items={VIEW_OPTS} initValue={this.props.currentView} label="View" onSelect={this.props.onSelectView} />
         <div className="toolbar-divider"/>
-        <a className="btn toolbar-btn" href="#">Get Contact Info</a>
+        <a className="btn toolbar-btn" href="#" onClick={this.onToggleContactInfo.bind(this)}>Get Contact Info</a>
         <a className="btn toolbar-btn" href="#">Verify</a>
       </div>
+      <Alert className="center-block" Form={ContactInfoForm} formProps={{ userId: this.props.userId }} isOpen={this.state.isContactInfoOpen} onClose={this.onToggleContactInfo.bind(this)} />
     </div>
   }
 }
@@ -104,7 +117,7 @@ export default class Profile extends React.Component {
       <div className="flex">
         <LeftNav location={this.props.location} />
         <div className="flex-fill">
-          <Toolbar currentView={this.state.view} onSelectView={this.onSelectView.bind(this)} />
+          <Toolbar userId={id} currentView={this.state.view} onSelectView={this.onSelectView.bind(this)} />
           <div className="profile-header">
             <UserPic id={id} />
             <div className="info">
