@@ -24,9 +24,10 @@ class Toolbar extends React.Component {
   render() {
     return <div className="toolbar">
       <div className="toolbar-inner">
+        <DropdownSelectorBtn className="btn toolbar-btn" items={FILTER_OPTS} initValue={this.props.currentFilter} label="View" onSelect={this.props.onSelectFilter} />
+        <div className="toolbar-divider"/>
         <a className="btn toolbar-btn" href="#">Add New Contact</a>
         <a className="btn toolbar-btn" href={'#/profile/'+encodeURIComponent(app.user.id)}>Open Your Profile</a>
-        <DropdownSelectorBtn className="btn toolbar-btn" items={FILTER_OPTS} initValue={this.props.currentFilter} label="Filter" onSelect={this.props.onSelectFilter} />
       </div>
     </div>
   }

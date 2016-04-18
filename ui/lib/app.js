@@ -142,14 +142,6 @@ function onPatchworkEvent (e) {
   else if (e.type == 'isread') {
     app.emit('update:isread', { key: e.key, value: e.value })
   }
-  else if (e.type == 'channelpinned') {
-    updateChannels(e.channel, { pinned: e.value })
-    app.emit('update:channels')
-  }
-  else if (e.type == 'channelwatched') {
-    updateChannels(e.channel, { watched: e.value })
-    app.emit('update:channels')
-  }
 }
 
 function pollPeers () {
