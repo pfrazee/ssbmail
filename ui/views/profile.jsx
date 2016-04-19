@@ -126,7 +126,6 @@ export default class Profile extends React.Component {
                 ? <div>This is you!</div>
                 : <div className="btns">
                     <FollowBtn id={id} />
-                    <a className="btn highlighted" href="#">New Message</a>
                   </div> }
               <div>Followed by: <UserLinks limit={2} ids={social.followedFollowers(app.users, app.user.id, id)} /></div>
               <div>Verified by:</div>

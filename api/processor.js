@@ -3,29 +3,32 @@ var u = require('./util')
 
 module.exports = function (sbot, db, state, emit) {
 
-  var processors = {
-    post: function (msg) {
-      var c = msg.value.content
-      var root = mlib.link(c.root, 'msg')
-      var recps = mlib.links(c.recps)
+  function postOrMail (msg) {
+    var c = msg.value.content
+    var root = mlib.link(c.root, 'msg')
+    var recps = mlib.links(c.recps)
 
-      // inbox index:
-      // add msgs that address the user
-      var inboxRow
-      if (u.findLink(recps, sbot.id)) {
-        inboxRow = state.inbox.sortedUpsert(msg.received, root ? root.link : msg.key)
+    // inbox index:
+    // add msgs that address the user
+    var inboxRow
+    if (u.findLink(recps, sbot.id)) {
+      inboxRow = state.inbox.sortedUpsert(msg.received, root ? root.link : msg.key)
+      emit('index-change', { index: 'inbox' })
+      attachChildIsRead(inboxRow, msg.key)
+    }
+    // update for replies
+    else if (root) {
+      inboxRow = state.inbox.sortedUpdate(msg.received, root.link)
+      if (inboxRow) {          
         emit('index-change', { index: 'inbox' })
         attachChildIsRead(inboxRow, msg.key)
       }
-      // update for replies
-      else if (root) {
-        inboxRow = state.inbox.sortedUpdate(msg.received, root.link)
-        if (inboxRow) {          
-          emit('index-change', { index: 'inbox' })
-          attachChildIsRead(inboxRow, msg.key)
-        }
-      }
-    },
+    }
+  }
+
+  var processors = {
+    post: postOrMail,
+    mail: postOrMail,
 
     contact: function (msg) {      
       mlib.links(msg.value.content.contact, 'feed').forEach(function (link) {
@@ -246,7 +249,7 @@ module.exports = function (sbot, db, state, emit) {
     key = key || indexRow.key
     state.pinc()
     db.isread.get(key, function (err, v) {
-      indexRow.isread = !!v
+      indexRow.isRead = !!v
       state.pdec()
     })
   }
@@ -263,8 +266,8 @@ module.exports = function (sbot, db, state, emit) {
     })
 
     // lookup the root isread from DB if not already on the row
-    if (typeof indexRow.isread == 'boolean') {
-      rootIsRead = indexRow.isread
+    if (typeof indexRow.isRead == 'boolean') {
+      rootIsRead = indexRow.isRead
     } else {
       db.isread.get(indexRow.key, function (err, v) {
         rootIsRead = !!v
@@ -278,9 +281,9 @@ module.exports = function (sbot, db, state, emit) {
         return
 
       // combine child and root isread state
-      indexRow.isread = rootIsRead && childIsRead
+      indexRow.isRead = rootIsRead && childIsRead
       
-      cb && cb(null, indexRow.isread)
+      cb && cb(null, indexRow.isRead)
       state.pdec() // call this last, after all async work is done
     }
   }

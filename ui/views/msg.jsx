@@ -49,9 +49,7 @@ export default class Msg extends React.Component {
         <LeftNav location={this.props.location} composerProps={{ isPublic: true }} />
         <div className="flex-fill">
           <Toolbar {...toolbarHandlers} msgId={id} />
-          <VerticalFilledContainer id="msg-thread-vertical">
-            <Thread id={id} ref="thread" suggestOptions={app.suggestOptions} live />
-          </VerticalFilledContainer>
+          <Thread id={id} ref="thread" live />
         </div>
       </div>
     </div>

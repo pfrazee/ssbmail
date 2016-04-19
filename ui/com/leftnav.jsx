@@ -44,7 +44,7 @@ export default class LeftNav extends React.Component {
     app.removeListener('update:indexCounts', this.refresh)
   }
 
-  onClickCompose() {
+  onToggleCompose() {
     clearTimeout(this.expandTimeout)
     if (this.state.isComposerOpen) {
       this.setState({ isComposerOpen: false })
@@ -84,18 +84,16 @@ export default class LeftNav extends React.Component {
   }
 
   render() {
-    const onClickCompose = this.onClickCompose.bind(this)
+    const onToggleCompose = this.onToggleCompose.bind(this)
     const pathname = this.props.location && this.props.location.pathname
 
     // render
     return <div className="leftnav">
-      { this.state.isComposerOpen
-        ? <a className="btn highlighted big-btn" onClick={onClickCompose}><i className="fa fa-times" /> Cancel</a>
-        : <a className="btn highlighted big-btn" onClick={onClickCompose}><i className="fa fa-pencil" /> Compose</a> }
+      <a className="btn highlighted big-btn" onClick={onToggleCompose}><i className="fa fa-pencil" /> Compose</a>
 
       { this.state.isComposerOpen
         ? <div ref="composer" className="leftnav-composer">
-            <Composer {...this.props.composerProps} suggestOptions={app.suggestOptions} channels={app.channels} onSend={this.onSend.bind(this)} />
+            <Composer suggestOptions={app.suggestOptions} onSend={this.onSend.bind(this)} onCancel={onToggleCompose} />
           </div>
         : '' }
 

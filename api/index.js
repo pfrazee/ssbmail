@@ -110,9 +110,56 @@ exports.init = function (sbot, opts) {
   api.getIndexCounts = function (cb) {
     awaitSync(function () {
       var counts = {
-        inboxUnread: state.inbox.filter(function (row) { return !row.isread }).length
+        inboxUnread: state.inbox.filter(function (row) { return !row.isRead }).length
       }
       cb(null, counts)
+    })
+  }
+
+  api.getThread = function (msgId, cb) {
+    // load thread, but defer computing any knowledge
+    threadlib.getPostSummary(sbot, msgId, {/*no computey please*/}, (err, thread) => {
+      if (err)
+        return cb(err)
+
+      threadlib.decryptThread(sbot, thread, err => {
+        // flatten *before* fetching info on replies, to make sure that info is attached to the right msg object
+        // var flattenedMsgs = threadlib.flattenThread(thread)
+        // thread.related = flattenedMsgs.slice(flattenedMsgs.indexOf(thread) + 1) // skip past the root
+
+        // HACK
+        // flattenThread doesnt work without doing full relatedMessages
+        // until it's updated, let's just trust the asserted timestamp (for now!)
+        // -prf
+        thread.related.sort((a, b) => b.value.timestamp - a.value.timestamp)
+
+        threadlib.fetchThreadData(sbot, thread, { isRead: true }, (err, thread) => {
+          if (err)
+            return cb(err)
+
+          // remove some data, and duplicates, to improve the throughput
+          var added={}
+          thread.related = thread.related.filter(r => {
+            const t = r.value.content.type
+            if (t != 'post' && t != 'mail') return false
+            if (added[r.key]) return false
+            added[r.key] = true
+            return true
+          })
+          thread.related.forEach(r => {
+            if (r.value) {
+              delete r.value.hash
+              delete r.value.previous
+              delete r.value.signature
+              if (r.value.content)
+                delete r.value.content.recps
+            }
+            delete r.related
+          })
+
+          cb(null, thread)
+        })
+      })
     })
   }
 
@@ -151,8 +198,8 @@ exports.init = function (sbot, opts) {
     var index = state[indexname]
     var row = index.find(key, keyname)
     if (row) {
-      var wasread = row.isread
-      row.isread = true
+      var wasread = row.isRead
+      row.isRead = true
       if (!wasread)
         emit('index-change', { index: indexname })
       return true
@@ -170,8 +217,8 @@ exports.init = function (sbot, opts) {
     var index = state[indexname]
     var row = index.find(key, keyname)
     if (row) {
-      var wasread = row.isread
-      row.isread = false
+      var wasread = row.isRead
+      row.isRead = false
       if (wasread)
         emit('index-change', { index: indexname })
       return true
@@ -210,7 +257,7 @@ exports.init = function (sbot, opts) {
 
       var done = multicb()
       index
-        .filter(function (row) { return !row.isread })
+        .filter(function (row) { return !row.isRead })
         .forEach(function (row) { 
           var cb = done()
           threadlib.getPostThread(sbot, row.key, { isRead: true }, function (err, thread) {
@@ -401,9 +448,15 @@ exports.init = function (sbot, opts) {
       // helper to fetch rows
       function fetch (row, cb) {
         if (threads) {
-          threadlib.getPostSummary(sbot, row.key, { isBookmarked: false, isRead: true, votes: true, mentions: sbot.id }, function (err, thread) {
-            for (var k in thread)
-              row[k] = thread[k]
+          threadlib.getPostSummary(sbot, row.key, { isRead: true }, function (err, thread) {
+            if (thread) {
+              const lastMsg  = threadlib.getLastThreadPost(thread)
+              row.value      = thread.value
+              row.hasUnread  = thread.hasUnread
+              row.plaintext  = thread.plaintext
+              row.updatedTs  = lastMsg ? lastMsg.value.timestamp : row.value.timestamp
+              row.numReplies = threadlib.countReplies(thread)
+            }
             cb(null, row)
           })
         } else {
@@ -439,7 +492,7 @@ exports.init = function (sbot, opts) {
             (lte && row.ts > lte[0]) ||
             (gt  && row.ts <= gt[0]) ||
             (gte && row.ts < gte[0]) ||
-            (unread && row.isread)
+            (unread && row.isRead)
           )
           if (invalid)
             continue
