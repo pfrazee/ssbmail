@@ -1,57 +1,110 @@
-# Patchwork
+# MX mail
 
-![screenshot](./screenshot.png)
+MX is an encrypted mail application on a decentralized network.
+It's not email, but it's better.
 
-**Patchwork is a decentralized messaging and sharing app.**
+It doesnt work yet though, so dont try to download it.
 
-It's better than email because:
+**Protocols**
+ - [Secure Scuttlebutt](https://scuttlebot.io/more/protocols/secure-scuttlebutt.html) p2p signed-log gossip
+ - [Secret Handshake](https://scuttlebot.io/more/protocols/secret-handshake.html) transport layer security
+ - [Private Box](https://scuttlebot.io/more/protocols/private-box.html) log-entry encryption
 
- - Private messages are end-to-end encrypted, always.
- - You have to follow somebody to get messages from them, so you won't get spammed.
- - Your mail can be public broadcasts or private, and you'll only see replies by people you follow.
- - The datastructure is a global mesh of append-only logs, which can support new types of data (not just "mail").
- - Users are not bound to one server/host (what we call "pubs") and do not have to trust the servers.
- - It's very easy to setup and maintain your own pub.
-
-It's better than twitter and facebook because:
-
- - Private messages are end-to-end encrypted, always.
- - The software runs on your device, so there's nobody tracking your browsing.
- - The application-code is FOSS, so you're free to fork or write new applications without a gatekeeper setting terms.
- - Data is saved to your disk, and so the application works offline.
- - You can sync directly with friends over the wifi. 
+![screenshot.png](screenshot.png)
 
 
-Because we're still in development, **you'll need to contact an SSB team member (in #scuttlebutt on Freenode) to get onto the network!**
-That's our informal barrier to entry right now, since we're not prepared for lots of users yet.
+### Encrypted mail on signed logs
 
-Patchwork embeds the [Scuttlebot networked database](https://github.com/ssbc/scuttlebot), so if you're running Patchwork, you don't need to run another scuttlebot server.
+MX is a private mail system built on the [secure scuttlebutt signed-log network](https://scuttlebot.io/more/protocols/secure-scuttlebutt.html).
 
-## [Install Instructions](./docs/install.md)
+Rather than attempting to route individual messages to specific hosts, SSB writes each users' messages to a single append-only log.
+The log is then gossiped uniformly to any peer that's interested in the messages.
 
-## [Electron Version](https://github.com/ssbc/patchwork-electron)
+Private messages are encrypted with the [private box protocol](https://scuttlebot.io/more/protocols/private-box.html).
+Private box hides the data and metadata of the message; it doesn't reveal the message, subject line, or recipients.
 
-## Docs
+When new log-entries are downloaded, interested parties attempt to decrypt with their private key.
+If successful, then they know the message was for them; otherwise, the message is ignored (and can be discarded).
 
-- [Help / FAQ](./docs/help-faq.md)
-- [Building Patchwork](./docs/BUILDING.md)
-- [Creating a Testing Environment, and Running Tests](./docs/TESTING.md)
-- [Patchwork Project Structure](./docs/PROJECT-STRUCTURE.md)
-- [SSB Docs Repo](https://github.com/ssbc/docs)
+SSB log entries are simple JSON, so they are very general and extensible, and can represent more than just mail.
+MX uses it for user-profiles, for instance, and to broadcast the social-graph relationships.
 
-## License
 
-Copyright (C) 2015-2016 Secure Scuttlebutt Consortium
+### Recipient authentication
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+MX uses a [web of trust](https://en.wikipedia.org/wiki/Web_of_trust) to authenticate users.
+Users follow each other's SSB logs to form a "Cryptographic Social Network."
+The "follows" are broadcasted publicly, for everyone to see.
+Confidence in identities is created by aggregating positive signals (follows, "verifications") and negative signals (flags) from the user's social graph.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+### "Pub" dumb servers
+
+MX runs on the user device, not on a web host.
+This is to protect the encryption keys (since browsers cant do that).
+It also lets us have offline operation, and better performance, in some cases.
+
+The SSB protocol is peer-to-peer, but there is no global DHT or NAT-traversal system.
+Instead we use "Pub servers" on public IPs, and they rehost the users' logs.
+
+Pub servers are unprivileged and not given any trust (nor should they be; most of them are run on cloud VPSes).
+They just exist to improve network availability, and to keep users from having to reveal their IPs to each other.
+They can not read your mail, because we use end-to-end encryption.
+They're basically like other users on the SSB network.
+
+You must register with a Pub to be active on the network.
+(If you know how to run nodejs on linux, then it's easy to setup one yourself.)
+You can change your pub, or use more than one, without disrupting your account.
+
+
+### Introduction / user-discovery
+
+The MX protocols (SSB) lack a centralized name registry.
+Therefore users have to exchange contact info out-of-band.
+
+[See Ideas: user-directories](#user-directories)
+
+
+### Automated bot users
+
+Bots are easy to write for MX.
+You can use them to create mailing lists, user-directories, and so on.
+(Pubs are a kind of bot.)
+
+Documentation is available on the [Scuttlebot site](https://scuttlebot.io/).
+(Scuttlebot is a nodejs implementation of the SSB protocol, which MX embeds.)
+
+
+
+## Ideas
+
+Some todo ideas for the future.
+
+
+### Verifications
+
+It'd be useful if we could bind users' MX identities to other accounts, by sharing proofs of key-ownership through them.
+This would improve the confidence in user identities.
+
+For instance, you might assert, "I am bob@gmail.com," by publishing the claim on your log.
+You'd send that log entry's JSON (which includes your signature) to me via bob@gmail.com.
+I would input this proof into MX; I would confirm I received it from bob@gmail.com, and MX would confirm the message matches your log.
+
+Afterward, MX would publish a verification-message on my log, saying that I confirmed your identity.
+My followers would add that verification to their evaluation of your account.
+
+
+### User directories
+
+Taking verifications further, we can use directory-sites -- backed by their own logs -- to improve discovery.
+
+The site would run a service for proving ownership of other accounts (twitter, email, github, etc).
+
+The verifications would be broadcast on an ssb log.
+Users could choose to follow the directory, in order to monitor and auto-download contact data.
+Alternatively, they could go directly to the directory-site to lookup people.
+
+To keep a directory's log from becoming too large to follow, it might be a good idea to run directories as small communities, or groups.
+They might be part of a mailing-list, for instance.
+The goal would not to be to create "one directory site to rule them all."
+
