@@ -33,7 +33,7 @@ It is a decentralized network which has a looser host-dependency than e-mail.
 
 Rather than attempting to route individual messages to specific hosts, MX writes the user's messages to a single append-only log.
 The log is then gossiped uniformly to any peer that's interested in the messages.
-The hosts, called "Pubs", are announced on the logs and synced with periodically.
+The servers, called "Pubs", are announced on the logs and synced with periodically.
 
 
 ### Encrypted mail
