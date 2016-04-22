@@ -1,7 +1,7 @@
 # MX mail
 
 MX is an encrypted mail network.
-It's not email, it's better.
+It's not email, it's better!
 But it's not finished yet, so dont try to download it.
 
 ![screenshot.png](screenshot.png)
@@ -52,7 +52,7 @@ Instead, we use "Pub servers" on public IPs, and they rehost the users' logs.
 
 Pub servers are unprivileged and not given any trust (nor should they be, since most of them are run on cloud VPSes).
 They periodically sync their members' logs, and hold them indefinitely, for other users to request.
-They can not read your mail, because the mail is encryption with private-box.
+They can not read your mail, because the mail is encrypted with private-box.
 The advantage they give is, they improve the network's uptime, and they keep users from having to reveal their IPs to each other.
 
 You must register with a Pub to be active on the network.
