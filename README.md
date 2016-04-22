@@ -59,17 +59,17 @@ Confidence in identities is created by aggregating positive signals (follows, "v
 ### "Pub" dumb servers
 
 MX runs on the user device, not on a web host.
-This is to protect the encryption keys (since browsers cant do that).
+This is to protect the encryption keys.
 It also lets us have offline operation, and better performance, in some cases.
 
 The SSB protocol is peer-to-peer, but there is no global DHT or NAT-traversal system.
-It's therefore not possible to connect users' devices directly .
-Instead, we use "Pub servers" on public IPs, and they rehost the users' logs.
+It's therefore not possible to connect users' devices directly, unless they're on a LAN.
+Instead, we use Pub servers on public IPs, and they rehost the users' logs.
 
-Pub servers are unprivileged and not given any trust (nor should they be, since most of them are run on cloud VPSes).
-They periodically sync their members' logs, and hold them indefinitely, for other users to request.
+Pub servers are unprivileged and not given any trust.
+They periodically fetch updates to their members' logs, and hold them indefinitely, for other users to download.
 They can not read your mail, because the mail is encrypted with private-box.
-The advantage they give is, they improve the network's uptime, and they keep users from having to reveal their IPs to each other.
+They improve the network's uptime, and they keep users from having to reveal their IPs to each other.
 
 You must register with a Pub to be active on the network.
 If you know how to run nodejs on linux, then it's easy to setup one yourself; [here is the howto guide](https://scuttlebot.io/docs/config/create-a-pub.html).
@@ -81,6 +81,15 @@ Go to #scuttlebutt on freenode, for now, to ask for a pub membership.
 
 The MX protocols (SSB) lack a centralized name registry.
 Therefore users have to exchange contact info out-of-band.
+MX gives a UI control for doing so.
+
+The contact info includes 4 pieces of information, formatted as follows:
+
+```
+{user-pubkey}:via:{pubserver-hostname}:{pubserver-port}:{pubserver-pubkey}
+```
+
+It tends to be ~130 characters long.
 
 
 ### Automated bot users
