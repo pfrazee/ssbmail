@@ -29,10 +29,11 @@ They handle very basic tasks like log- and file-replication.
 ### Signed logs
 
 MX is built on the [secure scuttlebutt signed-log network](https://scuttlebot.io/more/protocols/secure-scuttlebutt.html).
-It is a decentralized network, and has a looser host-dependency than e-mail.
+It is a decentralized network which has a looser host-dependency than e-mail.
 
 Rather than attempting to route individual messages to specific hosts, MX writes the user's messages to a single append-only log.
 The log is then gossiped uniformly to any peer that's interested in the messages.
+The hosts, called "Pubs", are announced on the logs and synced with periodically.
 
 
 ### Encrypted mail
