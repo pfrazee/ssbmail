@@ -8,7 +8,7 @@ But it's not finished yet, so dont try to download it.
 
 ## Secure mail, dumb hosts
 
-MX is end-to-end encrypted.
+MX is end-to-end encrypted mail.
 Your private messages are unreadable, except to the recipients.
 
 MX's user-authentication does not depend on third parties.
