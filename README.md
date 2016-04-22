@@ -56,6 +56,12 @@ The "follows" are broadcasted publicly, for everyone to see.
 Confidence in identities is created by aggregating positive signals (follows, "verifications") and negative signals (flags) from the user's social graph.
 
 
+### Explicit following
+
+MX only allows users that you follow to message you.
+This stops spam from reaching your inbox.
+
+
 ### "Pub" dumb servers
 
 MX runs on the user device, not on a web host.
@@ -134,4 +140,5 @@ Alternatively, they could go directly to the directory-site to lookup people.
 To keep a directory's log from becoming too large to follow, it might be a good idea to run directories as small communities, or groups.
 They might be part of a mailing-list, for instance.
 The goal would not to be to create "one directory site to rule them all."
+
 
