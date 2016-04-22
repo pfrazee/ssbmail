@@ -15,7 +15,7 @@ MX's user-authentication does not depend on third parties.
 You collect proofs of identity from a social web-of-trust, and those proofs are stored on your device.
 
 MX's protocol is extensible; the messages are semi-structured (as JSON) and typed.
-You can use it to write applications other than just mail, by following the principles of the ["kappa architecture"](http://milinda.pathirage.org/kappa-architecture.com/).
+You can use it to write applications other than just mail.
 
 MX's servers, called Pubs, are dumb-servers for smart-clients.
 They handle very basic tasks like log- and file-replication.
