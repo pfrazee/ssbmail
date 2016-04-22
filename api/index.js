@@ -133,30 +133,46 @@ exports.init = function (sbot, opts) {
         return cb(err)
 
       threadlib.decryptThread(sbot, thread, err => {
+
+        // remove duplicates and some data (to improve the channel throughput on long threads)
+        var added={}
+        thread.related = thread.related.filter(r => {
+          const t = r.value.content.type
+          if (t != 'post' && t != 'mail') return false
+          if (added[r.key]) return false
+          added[r.key] = true
+          return true
+        })
+        thread.related.forEach(r => {
+          if (r.value) {
+            delete r.value.hash
+            delete r.value.previous
+            delete r.value.signature
+            if (r.value.content)
+              delete r.value.content.recps
+          }
+          delete r.related
+          delete r.rel
+          delete r.dest
+          delete r.source
+        })
+
+        // sort properly
         u.sortThreadReplies(thread)
-        threadlib.fetchThreadData(sbot, thread, { isRead: true }, (err, thread) => {
+
+        // fetch isread status
+        var done = multicb()
+        thread.hasUnread = false
+        threadlib.iterateThreadAsync(thread, 1, function (msg, cb2) {
+          msg.isRead = false
+          api.isRead(msg.key, function (err, isRead) {
+            msg.isRead = isRead
+            thread.hasUnread = thread.hasUnread || !isRead
+            cb2()
+          })
+        }, function (err) {
           if (err)
             return cb(err)
-
-          // remove some data, and duplicates, to improve the throughput
-          var added={}
-          thread.related = thread.related.filter(r => {
-            const t = r.value.content.type
-            if (t != 'post' && t != 'mail') return false
-            if (added[r.key]) return false
-            added[r.key] = true
-            return true
-          })
-          thread.related.forEach(r => {
-            if (r.value) {
-              delete r.value.hash
-              delete r.value.previous
-              delete r.value.signature
-              if (r.value.content)
-                delete r.value.content.recps
-            }
-            delete r.related
-          })
 
           cb(null, thread)
         })

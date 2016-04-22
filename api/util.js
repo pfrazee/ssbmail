@@ -139,6 +139,11 @@ exports.sortThreadReplies = function (thread) {
       if (related[j].key == branch.link) {
         if (j > i) {
           // swap the messages
+          // TODO
+          // swapping probably isnt the right way to handle this
+          // probably smarter to splice the parent into the position immediately above the child
+          // write tests and figure out the right call here
+          // -prf
           var r = related[j]
           related[j] = related[i]
           related[i] = r
