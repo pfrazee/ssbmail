@@ -4,6 +4,7 @@ import { Router, Route, IndexRoute } from 'react-router'
 import app from './lib/app'
 import Layout from './layout'
 import Inbox from './views/inbox'
+import Chat from './views/chat'
 import Feed from './views/feed'
 import Notices from './views/notices'
 import Data from './views/data'
@@ -34,6 +35,7 @@ export var routes = (
       <IndexRoute component={Inbox} />
       <Route path="inbox" component={Inbox} />
       <Route path="inbox/:view" component={Inbox} />
+      <Route path="chat" component={Chat} />
       <Route path="feed" component={Feed} />
       <Route path="notices" component={Notices} />
       <Route path="data" component={Data} />

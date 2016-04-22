@@ -4,6 +4,7 @@ module.exports = {
   getThread: 'async',
   getIndexCounts: 'async',
   createInboxStream: 'source',
+  createChatStream: 'source',
   createCertStream: 'source',
   createNoticeStream: 'source',
   createSearchStream: 'source',

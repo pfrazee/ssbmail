@@ -3,9 +3,11 @@ import React from 'react'
 import { Link } from 'react-router'
 import LocalStoragePersistedComponent from 'patchkit-ls-persisted'
 import Composer from 'mx-composer'
+import { ChatsList } from 'mx-chat'
 import Issues from './issues'
 import app from '../lib/app'
 import u from 'patchkit-util'
+import social from 'patchkit-util/social'
 
 class LinkGroup extends LocalStoragePersistedComponent {
   constructor(props) {
@@ -87,6 +89,22 @@ export default class LeftNav extends React.Component {
     const onToggleCompose = this.onToggleCompose.bind(this)
     const pathname = this.props.location && this.props.location.pathname
 
+    const sortByName = (a, b) => u.getName(app.users, a).localeCompare(u.getName(app.users, b))
+    const users = social.followeds(app.users, app.user.id).sort(sortByName)
+
+    // handle chat specially (for now)
+    // TODO
+    // re-enable chat view when its implemented
+    // for now, just go to their profile page
+    // -prf
+    var chatId = false
+    // if (pathname == '/chat')
+    //   chatId = decodeURIComponent(this.props.location.query.id)
+    // const onSelectChat = id => app.history.pushState(null, '/chat?id='+encodeURIComponent(id))
+    if (pathname.indexOf('/profile') === 0)
+      chatId = decodeURIComponent(pathname.slice('/pathname'.length))
+    const onSelectChat = id => app.history.pushState(null, '/profile/'+encodeURIComponent(id))
+
     // render
     return <div className="leftnav">
       <a className="btn highlighted big-btn" onClick={onToggleCompose}><i className="fa fa-pencil" /> Compose</a>
@@ -100,14 +118,10 @@ export default class LeftNav extends React.Component {
       <Issues/>
       
       <LeftNav.Link pathname={pathname} to="/"><i className="fa fa-inbox"/><strong>Inbox ({app.indexCounts.inboxUnread})</strong></LeftNav.Link>
-      <LeftNav.Link pathname={pathname} to="/chat"><i className="fa fa-comment-o"/>Chats</LeftNav.Link>
       <LeftNav.Link pathname={pathname} to="/contacts"><i className="fa fa-user"/>Contacts</LeftNav.Link>
       <LeftNav.Link pathname={pathname} to="/feed"><i className="fa fa-share-alt"/>Certs</LeftNav.Link>
-
       <hr/>
-      <LeftNav.Link className="thin" pathname={pathname} to={`/profile/${encodeURIComponent(app.user.id)}`}>Your Profile</LeftNav.Link>
-      <LeftNav.Link className="thin" pathname={pathname} to="/sync">Network Sync</LeftNav.Link>
-      <LeftNav.Link className="thin" pathname={pathname} to="/data">Data Feed</LeftNav.Link>
+      <ChatsList selected={chatId} ids={users} onSelect={onSelectChat} />
       
     </div>
   }

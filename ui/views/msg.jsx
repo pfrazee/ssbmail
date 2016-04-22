@@ -1,7 +1,6 @@
 'use babel'
 import React from 'react'
 import Thread from 'mx-flat-msg-thread'
-import VerticalFilledContainer from 'patchkit-vertical-filled'
 import ClipboardBtn from 'react-clipboard.js'
 import TopNav from '../com/topnav'
 import LeftNav from '../com/leftnav'

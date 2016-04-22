@@ -35,13 +35,15 @@ class Toolbar extends React.Component {
   }
 
   render() {
+    const EXTRA_LINKS = [{ label: 'Verify', onSelect: ()=>alert('Verifications are TODO, sorry!') }]
     return <div className="toolbar">
       <div className="toolbar-inner">
         <a className="btn toolbar-btn" href="#/contacts"><i className="fa fa-angle-left"/> Contacts</a>
         <DropdownSelectorBtn className="btn toolbar-btn" items={VIEW_OPTS} initValue={this.props.currentView} label="View" onSelect={this.props.onSelectView} />
         <div className="toolbar-divider"/>
         <a className="btn toolbar-btn" href="#" onClick={this.onToggleContactInfo.bind(this)}>Get Contact Info</a>
-        <a className="btn toolbar-btn" href="#">Verify</a>
+        <DropdownBtn className="btn toolbar-btn" right items={EXTRA_LINKS}><i className="fa fa-cog" /> <i className="fa fa-angle-down" /></DropdownBtn>
+        {''/* TODO reenable when ready <a className="btn toolbar-btn" href={"#/chat?id="+encodeURIComponent(this.props.userId)}>Go to Chat</a>*/}
       </div>
       <Alert className="center-block" Form={ContactInfoForm} formProps={{ userId: this.props.userId }} isOpen={this.state.isContactInfoOpen} onClose={this.onToggleContactInfo.bind(this)} />
     </div>

@@ -30,6 +30,17 @@ module.exports = function (sbot, db, state, emit) {
     post: postOrMail,
     mail: postOrMail,
 
+    chat: function (msg) {
+      // chat index: add chats
+      var recps = mlib.links(c.recps)
+      if (u.findLink(recps, sbot.id)) {
+        var indexName = 'chat-'+msg.value.author
+        var index = state[indexName] = (state[indexName] || u.index(indexName))
+        index.sortedUpsert(msg.ts, msg.key)
+        emit('index-change', { index: indexName })
+      }
+    },
+
     contact: function (msg) {      
       mlib.links(msg.value.content.contact, 'feed').forEach(function (link) {
         // update profiles
@@ -37,10 +48,19 @@ module.exports = function (sbot, db, state, emit) {
         if (toself) updateSelfContact(msg.value.author, msg)
         else        updateOtherContact(msg.value.author, link.link, msg)
       })
-      // certs index: add follows
       if ('following' in msg.value.content) {
+        // certs index: add follows
         state.certs.sortedUpsert(msg.received, msg.key)
         emit('index-change', { index: 'certs' })
+
+        // chat index: add follows
+        var contact = mlib.link(msg.value.content.contact)
+        if (contact && (contact.link == sbot.id || msg.value.author == sbot.id)) {
+          var indexName = 'chat-'+((contact.link == sbot.id) ? msg.value.author : contact.link)
+          var index = state[indexName] = (state[indexName] || u.index(indexName))
+          index.sortedUpsert(ts(msg), msg.key)
+          emit('index-change', { index: indexName })
+        }
       }
     },
 

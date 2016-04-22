@@ -30,11 +30,12 @@ app.fetchLatestState(function () {
 
 // choose a random title, for fun
 var titles = [
+  'crypto-social network',
+  'welcome to cypherspace',
   'make mail great again',
-  'we have the best mails',
-  'secure mail. dumb host.'
+  'secure mail. secure chat.'
 ]
-document.title = 'Mx Alpha - ' + titles[(Math.random() * titles.length)|0]
+document.title = 'Mx - ' + titles[(Math.random() * titles.length)|0]
 
 // Handlers
 // ========

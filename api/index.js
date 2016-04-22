@@ -10,6 +10,7 @@ var toPull      = require('stream-to-pull-stream')
 var ref         = require('ssb-ref')
 var pathlib     = require('path')
 var mlib        = require('ssb-msgs')
+var ssbref      = require('ssb-ref')
 var threadlib   = require('patchwork-threads')
 var u           = require('./util')
 
@@ -31,12 +32,21 @@ exports.init = function (sbot, opts) {
     inbox: u.index('inbox'),
     certs: u.index('certs'),
     notices: u.index('notices'),
+    // chat-{id} are created as needed
 
     // views
     profiles: {},
     names: {}, // ids -> names
     ids: {}, // names -> ids
     actionItems: {}
+  }
+
+  function getChatIndex (userId) {
+    var k = 'chat-'+userId
+    var index = state[k]
+    if (!index)
+      index = state[k] = u.index(k)
+    return index
   }
 
   // track sync state
@@ -166,6 +176,12 @@ exports.init = function (sbot, opts) {
   api.createInboxStream = indexStreamFn(state.inbox)
   api.createCertStream = indexStreamFn(state.certs)
   api.createNoticeStream = indexStreamFn(state.notices)
+  api.createChatStream = function (userId, opts) {
+    if (typeof userId !== 'string' || !ssbref.isFeed(userId))
+      return cb(new Error('Invalid user id'))
+    var index = getChatIndex(userId)
+    return indexStreamFn(index)(opts)
+  }
   api.createSearchStream = function (opts) {
     opts = opts || {}
     var searchRegex = new RegExp(opts.query||'', 'i')
