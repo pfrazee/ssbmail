@@ -1,6 +1,6 @@
 # MX mail
 
-MX is an encrypted mail application on a decentralized network.
+MX is an encrypted mail application.
 It's not email, but it's better.
 
 It doesnt work yet though, so dont try to download it.
@@ -13,18 +13,24 @@ It doesnt work yet though, so dont try to download it.
 ![screenshot.png](screenshot.png)
 
 
-### Encrypted mail on signed logs
+### Signed logs
 
-MX is a private mail system built on the [secure scuttlebutt signed-log network](https://scuttlebot.io/more/protocols/secure-scuttlebutt.html).
+MX is built on the [secure scuttlebutt signed-log network](https://scuttlebot.io/more/protocols/secure-scuttlebutt.html).
+It is decentralized, and has a looser host-dependency than e-mail (though it does still exist).
 
-Rather than attempting to route individual messages to specific hosts, SSB writes each users' messages to a single append-only log.
-The log is then gossiped uniformly to any peer that's interested in the messages.
+Rather than attempting to route individual messages to specific hosts, MX writes the user's messages to a single append-only log.
+The log is then gossiped uniformly to any peer that's interested in your messages.
+We sometimes call this a "galactic gossip protocol," because it *can* gossip the logs across the whole galaxy, but since the galaxy is so big, we only try to gossip them to the interested parties.
+(We thought that was better than calling it "global," which makes you think of a global singleton, like the BtC blockchain.)
+
+
+### Encrypted entries
 
 Private messages are encrypted with the [private box protocol](https://scuttlebot.io/more/protocols/private-box.html).
-Private box hides the data and metadata of the message; it doesn't reveal the message, subject line, or recipients.
+Private-box hides the data and metadata of the message; it doesn't reveal the content, subject line, or recipients.
 
-When new log-entries are downloaded, interested parties attempt to decrypt with their private key.
-If successful, then they know the message was for them; otherwise, the message is ignored (and can be discarded).
+When each log-entry is downloaded, the log's followers will attempt to decrypt it with their private key.
+If successful, then the the follower knows the message was for them; otherwise, the message is ignored (and can be discarded).
 
 SSB log entries are simple JSON, so they are very general and extensible, and can represent more than just mail.
 MX uses it for user-profiles, for instance, and to broadcast the social-graph relationships.
