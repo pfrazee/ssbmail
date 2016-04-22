@@ -1,35 +1,31 @@
 # MX mail
 
-MX is an encrypted mail application.
-It's not email, but it's better.
+MX is an encrypted mail network.
+It's not email, it's better.
+But it's not finished yet, so dont try to download it.
 
-It doesnt work yet though, so dont try to download it.
+![screenshot.png](screenshot.png)
 
-**Protocols**
+**Protocol reference**
  - [Secure Scuttlebutt](https://scuttlebot.io/more/protocols/secure-scuttlebutt.html) p2p signed-log gossip
  - [Secret Handshake](https://scuttlebot.io/more/protocols/secret-handshake.html) transport layer security
  - [Private Box](https://scuttlebot.io/more/protocols/private-box.html) log-entry encryption
 
-![screenshot.png](screenshot.png)
-
-
 ### Signed logs
 
 MX is built on the [secure scuttlebutt signed-log network](https://scuttlebot.io/more/protocols/secure-scuttlebutt.html).
-It is decentralized, and has a looser host-dependency than e-mail (though it does still exist).
+It is a decentralized network, and has a looser host-dependency than e-mail.
 
 Rather than attempting to route individual messages to specific hosts, MX writes the user's messages to a single append-only log.
-The log is then gossiped uniformly to any peer that's interested in your messages.
-We sometimes call this a "galactic gossip protocol," because it *can* gossip the logs across the whole galaxy, but since the galaxy is so big, we only try to gossip them to the interested parties.
-(We thought that was better than calling it "global," which makes you think of a global singleton, like the BtC blockchain.)
+The log is then gossiped uniformly to any peer that's interested in the messages.
 
 
-### Encrypted entries
+### Encrypted mail
 
-Private messages are encrypted with the [private box protocol](https://scuttlebot.io/more/protocols/private-box.html).
+Private messages are encrypted onto the log with the [private box protocol](https://scuttlebot.io/more/protocols/private-box.html).
 Private-box hides the data and metadata of the message; it doesn't reveal the content, subject line, or recipients.
 
-When each log-entry is downloaded, the log's followers will attempt to decrypt it with their private key.
+When each log-entry is downloaded, the log's followers attempt to decrypt it with their private key.
 If successful, then the the follower knows the message was for them; otherwise, the message is ignored (and can be discarded).
 
 SSB log entries are simple JSON, so they are very general and extensible, and can represent more than just mail.
@@ -51,24 +47,24 @@ This is to protect the encryption keys (since browsers cant do that).
 It also lets us have offline operation, and better performance, in some cases.
 
 The SSB protocol is peer-to-peer, but there is no global DHT or NAT-traversal system.
-Instead we use "Pub servers" on public IPs, and they rehost the users' logs.
+It's therefore not possible to connect users' devices directly .
+Instead, we use "Pub servers" on public IPs, and they rehost the users' logs.
 
-Pub servers are unprivileged and not given any trust (nor should they be; most of them are run on cloud VPSes).
-They just exist to improve network availability, and to keep users from having to reveal their IPs to each other.
-They can not read your mail, because we use end-to-end encryption.
-They're basically like other users on the SSB network.
+Pub servers are unprivileged and not given any trust (nor should they be, since most of them are run on cloud VPSes).
+They periodically sync their members' logs, and hold them indefinitely, for other users to request.
+They can not read your mail, because the mail is encryption with private-box.
+The advantage they give is, they improve the network's uptime, and they keep users from having to reveal their IPs to each other.
 
 You must register with a Pub to be active on the network.
-(If you know how to run nodejs on linux, then it's easy to setup one yourself.)
+If you know how to run nodejs on linux, then it's easy to setup one yourself; [here is the howto guide](https://scuttlebot.io/docs/config/create-a-pub.html).
 You can change your pub, or use more than one, without disrupting your account.
+Go to #scuttlebutt on freenode, for now, to ask for a pub membership.
 
 
 ### Introduction / user-discovery
 
 The MX protocols (SSB) lack a centralized name registry.
 Therefore users have to exchange contact info out-of-band.
-
-[See Ideas: user-directories](#user-directories)
 
 
 ### Automated bot users
@@ -81,8 +77,8 @@ Documentation is available on the [Scuttlebot site](https://scuttlebot.io/).
 (Scuttlebot is a nodejs implementation of the SSB protocol, which MX embeds.)
 
 
+---
 
-## Ideas
 
 Some todo ideas for the future.
 
