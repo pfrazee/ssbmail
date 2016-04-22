@@ -133,16 +133,7 @@ exports.init = function (sbot, opts) {
         return cb(err)
 
       threadlib.decryptThread(sbot, thread, err => {
-        // flatten *before* fetching info on replies, to make sure that info is attached to the right msg object
-        // var flattenedMsgs = threadlib.flattenThread(thread)
-        // thread.related = flattenedMsgs.slice(flattenedMsgs.indexOf(thread) + 1) // skip past the root
-
-        // HACK
-        // flattenThread doesnt work without doing full relatedMessages
-        // until it's updated, let's just trust the asserted timestamp (for now!)
-        // -prf
-        thread.related.sort((a, b) => b.value.timestamp - a.value.timestamp)
-
+        u.sortThreadReplies(thread)
         threadlib.fetchThreadData(sbot, thread, { isRead: true }, (err, thread) => {
           if (err)
             return cb(err)

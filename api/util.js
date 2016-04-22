@@ -119,3 +119,32 @@ module.exports.findLink = function (links, id) {
       return links[i]
   }
 }
+
+exports.sortThreadReplies = function (thread) {
+  var related = thread.related
+  if (!related || related.length == 0)
+    return
+
+  // sort by asserted publish time
+  related.sort(function (a, b) { return a.value.timestamp - b.value.timestamp })
+
+  // make sure the parents come before the children (using hash links)
+  for (var i=0; i < related.length; i++) {
+    var branch = mlib.link(related[i].value.content.branch || related[i].value.content.root)
+    if (!branch)
+      continue // shouldnt happen
+
+    // look for parent above
+    for (var j=0; j < related.length; j++) {
+      if (related[j].key == branch.link) {
+        if (j > i) {
+          // swap the messages
+          var r = related[j]
+          related[j] = related[i]
+          related[i] = r
+        }
+        break
+      }
+    }
+  }
+}
