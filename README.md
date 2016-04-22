@@ -6,10 +6,25 @@ But it's not finished yet, so dont try to download it.
 
 ![screenshot.png](screenshot.png)
 
+## Secure mail, dumb hosts
+
+MX is end-to-end encrypted.
+Your private messages are unreadable, except to the recipients.
+
+MX's user-authentication does not depend on third parties.
+You collect proofs of identity from a social web-of-trust, and those proofs are stored on your device.
+
+MX's protocol is extensible; the messages are semi-structured (as JSON) and typed.
+You can use it to write applications other than just mail, by following the principles of the ["kappa architecture"](http://milinda.pathirage.org/kappa-architecture.com/).
+
+MX's servers, called Pubs, are dumb-servers for smart-clients.
+They handle very basic tasks like log- and file-replication.
+
 **Protocol reference**
  - [Secure Scuttlebutt](https://scuttlebot.io/more/protocols/secure-scuttlebutt.html) p2p signed-log gossip
  - [Secret Handshake](https://scuttlebot.io/more/protocols/secret-handshake.html) transport layer security
  - [Private Box](https://scuttlebot.io/more/protocols/private-box.html) log-entry encryption
+ - [Scuttlebot API](https://scuttlebot.io/) the embedded database/networking stack
 
 ### Signed logs
 
