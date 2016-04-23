@@ -1,6 +1,6 @@
 # MX mail
 
-MX is an encrypted mail network.
+MX is an encrypted mail network. [Status: experimental](#status-experimental)
 
 ![screenshot.png](screenshot.png)
 
@@ -119,7 +119,6 @@ Alice would input this proof into MX; Alice would confirm she received it from b
 Afterward, MX would publish a verification-message on Alice's log, saying that she confirmed your identity.
 Alice's followers would add that verification to their evaluation of your account.
 
-
 #### User directories
 
 We can use directory-sites -- backed by their own logs -- to improve discovery.
@@ -134,3 +133,62 @@ To keep a directory's log from becoming too large to follow, it might be a good 
 They might be part of a mailing-list, for instance.
 The goal would not to be to create "one directory site to rule them all."
 The goal is to serve communities which have the social connectedness to verify and monitor each other.
+
+#### Tighter pub relationships
+
+Currently, MX will sync with any pub that a followed user has announced.
+This is a bit too chatty.
+
+I'd prefer that MX only connected to the local user's pub(s), while the pubs stayed just as chatty.
+That way, I don't have to reveal my presence to servers that I don't have a relationship with.
+
+#### Sidelogs and access-control
+
+The SSB network distributes the logs to any peer that requests them; there's no access-control.
+The logic is, private entries are protected by encryption, not access-control.
+
+This makes me a little uncomfortable.
+Imagine your private key was posted on pastebin.
+Since your messages can be retrieved freely, the entire world could now see your PMs, without expending a whole lot of effort.
+
+A private key compromise is always going to be disasterous.
+But, we can still take steps to contain the damage.
+
+We might consider creating "sidelogs" for each contact.
+This would be, a new keypair, and new ssb log, that's created when you add somebody to your contacts.
+This log would contain all private messages directed to the contact.
+The log would only be allowed to replicate to your device, the contact's device, your pub(s), and the contact's pub(s).
+
+This would add some protocol overhead.
+
+#### Multi-key identities
+
+SSB logs have a rigid correctness constraint, that you must maintain a linear sequence (seq: 1, seq: 2, seq: 3, etc).
+This means you cant share a log between multiple devices, unless you have a highly-consistent ordering process, perhaps by a server/client system.
+
+Since it's likely we'll need to alias multiple identities anyway, it may be better to implement multi-device support by giving each their own keypair & log, and then aliasing them together.
+
+#### Mobile version
+
+Cant make it in this world without mobile.
+Depends on multi-key identities, though.
+
+#### Chat
+
+This is really just an interface todo.
+(In fact, the code is 60% written for one-to-one chat.)
+
+Mail and chat are like PB&J.
+Can't really have one without the other.
+
+---
+
+### Status: experimental
+
+MX is still under development.
+Here are some important reasons to use caution:
+
+ - MX hasn't been audited.
+ - MX depends on a lot of NPM packages, which are fetched on install; we have to trust NPM and the package-owners not to do Bad Things.
+ - MX is a new system. There will be flaws, there always is.
+
