@@ -44,14 +44,11 @@ Private-box hides the data and metadata of the message; it doesn't reveal the co
 When each log-entry is downloaded, the log's followers attempt to decrypt it with their private key.
 If successful, then the the follower knows the message was for them; otherwise, the message is ignored (and can be discarded).
 
-SSB log entries are simple JSON with a 'type' field, and can represent more than just mail.
-MX uses it for user-profiles, for instance, and to broadcast the social-graph relationships.
-
 #### Recipient authentication
 
 MX uses a [web of trust](https://en.wikipedia.org/wiki/Web_of_trust) to authenticate users.
 Users follow each other's SSB logs to form a "cryptographic social network."
-The follows are broadcasted publicly, for everyone to see.
+The follows are broadcasted publicly on user logs, for everyone to see.
 Confidence in identities is created by aggregating positive signals (follows, "verifications") and negative signals (flags) from the user's social graph.
 
 #### Explicit following
@@ -76,7 +73,7 @@ They improve the network's uptime, and they keep users from having to reveal the
 
 You must register with a Pub to be active on the network.
 If you know how to run nodejs on linux, then it's easy to setup one yourself; [here is the howto guide](https://scuttlebot.io/docs/config/create-a-pub.html).
-You can change your pub, or use more than one, without disrupting your account.
+Unlike email, you can change your pub without losing your identity, or use more than one.
 
 #### Introduction / user-discovery
 
@@ -109,7 +106,7 @@ Some todo ideas for the future.
 
 #### Verifications
 
-It'd be useful if we could bind users' MX identities to other accounts, by sharing proofs of key-ownership through them.
+It'd be useful if we could bind users' MX identities to other non-web accounts, by sharing proofs of key-ownership through them.
 This would improve the confidence in user identities.
 
 For instance, you might assert, "I am bob@gmail.com," by publishing the claim on your log.
@@ -121,17 +118,18 @@ Alice's followers would add that verification to their evaluation of your accoun
 
 #### User directories
 
-We can use directory-sites -- backed by their own logs -- to improve discovery.
+We can use directory-sites, backed by logs, to improve discovery.
 
-The site would run a service for proving ownership of other accounts (twitter, email, github, etc).
+The site could run a service for proving ownership of other accounts (twitter, email, github, etc).
 The verifications would be broadcast on an ssb log.
-Users could choose to follow the directory, in order to monitor and auto-download contact data.
+Users could choose to follow the directory log, in order to monitor and auto-download contact data.
 Alternatively, they could go directly to the directory-site to lookup people.
-A directory site might simply aggregate the data from multiple directory logs.
+
+A directory site could aggregate the entries from multiple directory logs.
 
 To keep a directory's log from becoming too large to follow, it might be a good idea to run directories as small communities, or groups.
 They might be part of a mailing-list, for instance.
-The goal would not to be to create "one directory site to rule them all."
+The goal would not to be to create "one directory log to rule them all."
 The goal is to serve communities which have the social connectedness to verify and monitor each other.
 
 #### Tighter pub relationships
@@ -139,8 +137,8 @@ The goal is to serve communities which have the social connectedness to verify a
 Currently, MX will sync with any pub that a followed user has announced.
 This is a bit too chatty.
 
-I'd prefer that MX only connected to the local user's pub(s), while the pubs stayed just as chatty.
-That way, I don't have to reveal my presence to servers that I don't have a relationship with.
+I'd prefer that MX only connected to my pub(s), while the pub servers stayed just as chatty with each other.
+That way, I don't have to reveal my presence to pubs that I don't have a relationship with.
 
 #### Sidelogs and access-control
 
@@ -149,7 +147,7 @@ The logic is, private entries are protected by encryption, not access-control.
 
 This makes me a little uncomfortable.
 Imagine your private key was posted on pastebin.
-Since your messages can be retrieved freely, the entire world could now see your PMs, without expending a whole lot of effort.
+Since your messages can be retrieved freely, the entire world could now see your PMs, without expending a whole lot of effort to get them.
 
 A private key compromise is always going to be disasterous.
 But, we can still take steps to contain the damage.
@@ -161,25 +159,25 @@ The log would only be allowed to replicate to your device, the contact's device,
 
 This would add some protocol overhead.
 
+#### "Friend request" protocol
+
+It would be handy if you could send a message to a user's pub, asking for an introduction to a user.
+The pub would mail the target user with your contact info.
+
 #### Multi-key identities
 
 SSB logs have a rigid correctness constraint, that you must maintain a linear sequence (seq: 1, seq: 2, seq: 3, etc).
 This means you cant share a log between multiple devices, unless you have a highly-consistent ordering process, perhaps by a server/client system.
 
-Since it's likely we'll need to alias multiple identities anyway, it may be better to implement multi-device support by giving each their own keypair & log, and then aliasing them together.
-
-#### Mobile version
-
-Cant make it in this world without mobile.
-Depends on multi-key identities, though.
+Since it's likely we'll need to alias multiple identities anyway, it may be best to implement multi-device support by giving each their own keypair & log, and then aliasing them together.
 
 #### Chat
 
+Mail and chat are like PB&J.
+They belong together!
+
 This is really just an interface todo.
 (In fact, the code is 60% written for one-to-one chat.)
-
-Mail and chat are like PB&J.
-Can't really have one without the other.
 
 ---
 
