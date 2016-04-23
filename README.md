@@ -1,8 +1,6 @@
 # MX mail
 
 MX is an encrypted mail network.
-It's not email, it's better!
-But it's not finished yet, so dont try to download it.
 
 ![screenshot.png](screenshot.png)
 
@@ -14,10 +12,10 @@ Your private messages are unreadable, except to the recipients.
 MX's user-authentication does not depend on a third party.
 You collect proofs of identity from a social web-of-trust, and those proofs are stored on your device.
 
-MX's protocol is extensible; the messages are semi-structured (as JSON) and typed.
-You can use it to write applications other than just mail.
+MX's internal message format is typed JSON.
+You can use [the API](https://scuttlebot.io/docs/basics/open-a-client.html) to write applications other than mail.
 
-MX's servers, called Pubs, are dumb-servers for smart-clients.
+MX's servers, called Pubs, are not hosts, and dont see your private messages.
 They handle very basic tasks, like log- and file-replication.
 
 **Protocol reference**
@@ -26,7 +24,10 @@ They handle very basic tasks, like log- and file-replication.
  - [Private Box](https://scuttlebot.io/more/protocols/private-box.html) log-entry encryption
  - [Scuttlebot API](https://scuttlebot.io/) the embedded database/networking stack
 
-### Signed logs
+
+### Overview
+
+#### Signed logs
 
 MX is built on the [secure scuttlebutt signed-log network](https://scuttlebot.io/more/protocols/secure-scuttlebutt.html).
 It is a decentralized network.
@@ -35,8 +36,7 @@ Rather than attempting to route individual messages to specific hosts, MX writes
 Each user has its own log, identified by the public key.
 The log is then gossiped uniformly to any peer that's interested in the messages.
 
-
-### Encrypted mail
+#### Encrypted mail
 
 Private messages are encrypted onto the log with the [private box protocol](https://scuttlebot.io/more/protocols/private-box.html).
 Private-box hides the data and metadata of the message; it doesn't reveal the content, subject line, or recipients.
@@ -47,22 +47,19 @@ If successful, then the the follower knows the message was for them; otherwise, 
 SSB log entries are simple JSON with a 'type' field, and can represent more than just mail.
 MX uses it for user-profiles, for instance, and to broadcast the social-graph relationships.
 
-
-### Recipient authentication
+#### Recipient authentication
 
 MX uses a [web of trust](https://en.wikipedia.org/wiki/Web_of_trust) to authenticate users.
 Users follow each other's SSB logs to form a "cryptographic social network."
 The follows are broadcasted publicly, for everyone to see.
 Confidence in identities is created by aggregating positive signals (follows, "verifications") and negative signals (flags) from the user's social graph.
 
-
-### Explicit following
+#### Explicit following
 
 MX only allows users that you follow to message you.
 This stops spam from reaching your inbox.
 
-
-### "Pub" dumb servers
+#### "Pub" dumb servers
 
 MX runs on the user device, not on a web host.
 This is to protect the encryption keys.
@@ -81,8 +78,7 @@ You must register with a Pub to be active on the network.
 If you know how to run nodejs on linux, then it's easy to setup one yourself; [here is the howto guide](https://scuttlebot.io/docs/config/create-a-pub.html).
 You can change your pub, or use more than one, without disrupting your account.
 
-
-### Introduction / user-discovery
+#### Introduction / user-discovery
 
 The MX protocols (SSB) lack a centralized name registry.
 Therefore users have to exchange contact info out-of-band.
@@ -97,7 +93,7 @@ The contact info includes 4 pieces of information, formatted as follows:
 It tends to be ~130 characters long.
 
 
-### Automated bot users
+#### Automated bot users
 
 Bots are easy to write for MX.
 You can use them to create mailing lists, user-directories, and so on.
@@ -111,7 +107,7 @@ Documentation is available on the [Scuttlebot site](https://scuttlebot.io/) (Scu
 Some todo ideas for the future.
 
 
-### Verifications
+#### Verifications
 
 It'd be useful if we could bind users' MX identities to other accounts, by sharing proofs of key-ownership through them.
 This would improve the confidence in user identities.
@@ -124,7 +120,7 @@ Afterward, MX would publish a verification-message on Alice's log, saying that s
 Alice's followers would add that verification to their evaluation of your account.
 
 
-### User directories
+#### User directories
 
 We can use directory-sites -- backed by their own logs -- to improve discovery.
 
@@ -138,4 +134,3 @@ To keep a directory's log from becoming too large to follow, it might be a good 
 They might be part of a mailing-list, for instance.
 The goal would not to be to create "one directory site to rule them all."
 The goal is to serve communities which have the social connectedness to verify and monitor each other.
-
