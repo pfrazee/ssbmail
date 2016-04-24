@@ -30,10 +30,9 @@ app.fetchLatestState(function () {
 
 // choose a random title, for fun
 var titles = [
-  'crypto-social network',
   'welcome to cypherspace',
   'make mail great again',
-  'secure mail. secure chat.'
+  'civilian cryptosystem'
 ]
 document.title = 'ssbmail - ' + titles[(Math.random() * titles.length)|0]
 

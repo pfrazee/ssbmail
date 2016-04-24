@@ -9,10 +9,16 @@ import DropdownBtn from 'patchkit-dropdown'
 import app from '../lib/app'
 
 class Toolbar extends React.Component {
+  onMarkAllRead(e) {
+    app.ssb.patchwork.markAllRead('inbox', function (err) {
+      if (err) throw err
+    })
+  }
+
   render() {
     return <div className="toolbar">
       <div className="toolbar-inner">
-        <a className="btn toolbar-btn" href="#">Mark All Read</a>
+        <DropdownBtn className="btn toolbar-btn" items={[{ label: 'Are you sure? (Click to confirm.)', onSelect: this.onMarkAllRead.bind(this) }]}>Mark All Read</DropdownBtn>
       </div>
     </div>
   }
