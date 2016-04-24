@@ -138,7 +138,7 @@ exports.init = function (sbot, opts) {
         var added={}
         thread.related = thread.related.filter(r => {
           const t = r.value.content.type
-          if (t != 'post' && t != 'mail') return false
+          if (t != 'post') return false
           if (added[r.key]) return false
           added[r.key] = true
           return true

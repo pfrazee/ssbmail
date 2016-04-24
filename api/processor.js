@@ -3,32 +3,29 @@ var u = require('./util')
 
 module.exports = function (sbot, db, state, emit) {
 
-  function postOrMail (msg) {
-    var c = msg.value.content
-    var root = mlib.link(c.root, 'msg')
-    var recps = mlib.links(c.recps)
+  var processors = {
+    post: function (msg) {
+      var c = msg.value.content
+      var root = mlib.link(c.root, 'msg')
+      var recps = mlib.links(c.recps)
 
-    // inbox index:
-    // add msgs that address the user
-    var inboxRow
-    if (u.findLink(recps, sbot.id)) {
-      inboxRow = state.inbox.sortedUpsert(msg.received, root ? root.link : msg.key)
-      emit('index-change', { index: 'inbox' })
-      attachChildIsRead(inboxRow, msg.key)
-    }
-    // update for replies
-    else if (root) {
-      inboxRow = state.inbox.sortedUpdate(msg.received, root.link)
-      if (inboxRow) {          
+      // inbox index:
+      // add msgs that address the user
+      var inboxRow
+      if (u.findLink(recps, sbot.id)) {
+        inboxRow = state.inbox.sortedUpsert(msg.received, root ? root.link : msg.key)
         emit('index-change', { index: 'inbox' })
         attachChildIsRead(inboxRow, msg.key)
       }
-    }
-  }
-
-  var processors = {
-    post: postOrMail,
-    mail: postOrMail,
+      // update for replies
+      else if (root) {
+        inboxRow = state.inbox.sortedUpdate(msg.received, root.link)
+        if (inboxRow) {          
+          emit('index-change', { index: 'inbox' })
+          attachChildIsRead(inboxRow, msg.key)
+        }
+      }
+    },
 
     chat: function (msg) {
       // chat index: add chats
