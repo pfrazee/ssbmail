@@ -35,7 +35,7 @@ var titles = [
   'make mail great again',
   'secure mail. secure chat.'
 ]
-document.title = 'Mx - ' + titles[(Math.random() * titles.length)|0]
+document.title = 'ssbmail - ' + titles[(Math.random() * titles.length)|0]
 
 // Handlers
 // ========

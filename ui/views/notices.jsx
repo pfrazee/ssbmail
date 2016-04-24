@@ -3,8 +3,8 @@ import React from 'react'
 import { Link } from 'react-router'
 import TopNav from '../com/topnav'
 import LeftNav from '../com/leftnav'
-import MsgList from 'mx-msg-list'
-import Card from 'mx-msg-view/card'
+import MsgList from 'ssbmail-msg-list'
+import Card from 'ssbmail-msg-view/card'
 import app from '../lib/app'
 
 export default class Notices extends React.Component {

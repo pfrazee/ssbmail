@@ -1,21 +1,21 @@
-# MX mail
+# ssb mail
 
-MX is an encrypted mail network. [Status: experimental](#status-experimental)
+SSBMail is an encrypted mail network. [Status: experimental](#status-experimental)
 
 ![screenshot.png](screenshot.png)
 
 ## Secure mail, dumb hosts
 
-MX is end-to-end encrypted mail.
+SSBMail is end-to-end encrypted mail.
 Your private messages are unreadable, except to the recipients.
 
-MX's user-authentication does not depend on a third party.
+SSBMail's user-authentication does not depend on a third party.
 You collect proofs of identity from a social web-of-trust, and those proofs are stored on your device.
 
-MX's internal message format is typed JSON.
+SSBMail's internal message format is typed JSON.
 You can use [the API](https://scuttlebot.io/docs/basics/open-a-client.html) to write applications other than mail.
 
-MX's servers, called Pubs, are not hosts, and dont see your private messages.
+SSBMail's servers, called Pubs, are not hosts, and dont see your private messages.
 They handle very basic tasks, like log- and file-replication.
 
 **Protocol reference**
@@ -29,10 +29,10 @@ They handle very basic tasks, like log- and file-replication.
 
 #### Signed logs
 
-MX is built on the [secure scuttlebutt signed-log network](https://scuttlebot.io/more/protocols/secure-scuttlebutt.html).
+SSBMail is built on the [secure scuttlebutt signed-log network](https://scuttlebot.io/more/protocols/secure-scuttlebutt.html).
 It is a decentralized network.
 
-Rather than attempting to route individual messages to specific hosts, MX writes the user's messages to an append-only log.
+Rather than attempting to route individual messages to specific hosts, SSBMail writes the user's messages to an append-only log.
 Each user has its own log, identified by the public key.
 The log is then gossiped uniformly to any peer that's interested in the messages.
 
@@ -46,19 +46,19 @@ If successful, then the the follower knows the message was for them; otherwise, 
 
 #### Recipient authentication
 
-MX uses a [web of trust](https://en.wikipedia.org/wiki/Web_of_trust) to authenticate users.
+SSBMail uses a [web of trust](https://en.wikipedia.org/wiki/Web_of_trust) to authenticate users.
 Users follow each other's SSB logs to form a "cryptographic social network."
 The follows are broadcasted publicly on user logs, for everyone to see.
 Confidence in identities is created by aggregating positive signals (follows, "verifications") and negative signals (flags) from the user's social graph.
 
 #### Explicit following
 
-MX only allows users that you follow to message you.
+SSBMail only allows users that you follow to message you.
 This stops spam from reaching your inbox.
 
 #### "Pub" dumb servers
 
-MX runs on the user device, not on a web host.
+SSBMail runs on the user device, not on a web host.
 This is to protect the encryption keys.
 It also lets us have offline operation, and better performance in some cases.
 
@@ -77,9 +77,9 @@ Unlike email, you can change your pub without losing your identity, or use more 
 
 #### Introduction / user-discovery
 
-The MX protocols (SSB) lack a centralized name registry.
+The SSBMail protocols (SSB) lack a centralized name registry.
 Therefore users have to exchange contact info out-of-band.
-MX gives a UI control for doing so.
+SSBMail gives a UI control for doing so.
 
 The contact info includes 4 pieces of information, formatted as follows:
 
@@ -92,10 +92,10 @@ It tends to be ~130 characters long.
 
 #### Automated bot users
 
-Bots are easy to write for MX.
+Bots are easy to write for SSBMail.
 You can use them to create mailing lists, user-directories, and so on.
 (Pubs are a kind of bot.)
-Documentation is available on the [Scuttlebot site](https://scuttlebot.io/) (Scuttlebot is the engine behind MX).
+Documentation is available on the [Scuttlebot site](https://scuttlebot.io/) (Scuttlebot is the engine behind SSBMail).
 
 
 ---
@@ -106,14 +106,14 @@ Some todo ideas for the future.
 
 #### Verifications
 
-It'd be useful if we could bind users' MX identities to other non-web accounts, by sharing proofs of key-ownership through them.
+It'd be useful if we could bind users' SSBMail identities to other non-web accounts, by sharing proofs of key-ownership through them.
 This would improve the confidence in user identities.
 
 For instance, you might assert, "I am bob@gmail.com," by publishing the claim on your log.
 You'd send that log entry's JSON (which includes your signature) to Alice via bob@gmail.com.
-Alice would input this proof into MX; Alice would confirm she received it from bob@gmail.com, and MX would confirm the message matches your log.
+Alice would input this proof into SSBMail; Alice would confirm she received it from bob@gmail.com, and SSBMail would confirm the message matches your log.
 
-Afterward, MX would publish a verification-message on Alice's log, saying that she confirmed your identity.
+Afterward, SSBMail would publish a verification-message on Alice's log, saying that she confirmed your identity.
 Alice's followers would add that verification to their evaluation of your account.
 
 #### User directories
@@ -134,10 +134,10 @@ The goal is to serve communities which have the social connectedness to verify a
 
 #### Tighter pub relationships
 
-Currently, MX will sync with any pub that a followed user has announced.
+Currently, SSBMail will sync with any pub that a followed user has announced.
 This is a bit too chatty.
 
-I'd prefer that MX only connected to my pub(s), while the pub servers stayed just as chatty with each other.
+I'd prefer that SSBMail only connected to my pub(s), while the pub servers stayed just as chatty with each other.
 That way, I don't have to reveal my presence to pubs that I don't have a relationship with.
 
 #### Sidelogs and access-control
@@ -183,10 +183,10 @@ This is really just an interface todo.
 
 ### Status: experimental
 
-MX is still under development.
+SSBMail is still under development.
 Here are some important reasons to use caution:
 
- - MX hasn't been audited.
- - MX depends on a lot of NPM packages, which are fetched on install; we have to trust NPM and the package-owners not to do Bad Things.
- - MX is a new system. There will be flaws, there always is.
+ - SSBMail hasn't been audited.
+ - SSBMail depends on a lot of NPM packages, which are fetched on install; we have to trust NPM and the package-owners not to do Bad Things.
+ - SSBMail is a new system. There will be flaws, there always is.
 

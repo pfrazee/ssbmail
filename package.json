@@ -1,7 +1,7 @@
 {
-  "name": "ssb-patchwork",
-  "version": "2.7.0",
-  "description": "safe secure sharing",
+  "name": "ssbmail",
+  "version": "1.0.0",
+  "description": "secure mail",
   "main": "app/index.js",
   "repository": {
     "type": "git",
@@ -54,9 +54,9 @@
     "multiblob": "^1.8.0",
     "multicb": "^1.1.0",
     "muxrpc": "^6.1.1",
-    "mx-composer": "^1.0.0",
-    "mx-msg-list": "^1.0.0",
-    "mx-msg-view": "^1.0.0",
+    "ssbmail-composer": "^1.0.0",
+    "ssbmail-msg-list": "^1.0.0",
+    "ssbmail-msg-view": "^1.0.0",
     "nicedate": "~0.0.0",
     "observable": "^2.1.3",
     "once": "~1.3.1",

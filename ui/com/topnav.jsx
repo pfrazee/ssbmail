@@ -53,7 +53,7 @@ export default class TopNav extends React.Component {
 
     return <div className="topnav">
       <div className="flex topnav-bar">
-        <div className="logo"><Link to="/">[Mx] <span style={{color:'#aaa'}}>alpha</span></Link></div>
+        <div className="logo"><Link to="/">SSB mail</Link></div>
         <div className="flex-fill">
           <div className="search">
             <SearchPalette ref="search" query={this.props.searchQuery} placeholder={this.props.placeholder} getResults={getResults} />

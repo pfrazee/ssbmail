@@ -1,7 +1,7 @@
 'use babel'
 import React from 'react'
 import LeftNav from '../com/leftnav'
-import Composer from 'mx-composer'
+import Composer from 'ssbmail-composer'
 import app from '../lib/app'
 
 export default class ComposerView extends React.Component {

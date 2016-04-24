@@ -1,6 +1,6 @@
 'use babel'
 import React from 'react'
-import Thread from 'mx-flat-msg-thread'
+import Thread from 'ssbmail-msg-thread'
 import ClipboardBtn from 'react-clipboard.js'
 import TopNav from '../com/topnav'
 import LeftNav from '../com/leftnav'

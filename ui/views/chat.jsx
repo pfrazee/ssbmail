@@ -2,7 +2,7 @@
 import React from 'react'
 import TopNav from '../com/topnav'
 import LeftNav from '../com/leftnav'
-import { ChatsList, ChatView } from 'mx-chat'
+import { ChatsList, ChatView } from 'ssbmail-chat'
 import u from 'patchkit-util'
 import social from 'patchkit-util/social'
 import app from '../lib/app'
