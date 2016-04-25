@@ -36,7 +36,7 @@ exports.getUserContactInfo = function (id) {
   id = id || app.user.id
   var pubs = getUserPubs(id).filter(isActivePeer)
   if (pubs.length > 0)
-    return id + '[via]' + pubs[0].host + ':' + pubs[0].port + ':' + pubs[0].key
+    return id + ':via:' + pubs[0].host + ':' + pubs[0].port + ':' + pubs[0].key
   return id
 }
 

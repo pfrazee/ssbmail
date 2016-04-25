@@ -333,7 +333,7 @@ exports.init = function (sbot, opts) {
     )
   }
 
-  var lookupcodeRegex = /(@[a-z0-9\/\+\=]+\.[a-z0-9]+)(?:\[via\])?(.+)?/i
+  var lookupcodeRegex = /(@[a-z0-9\/\+\=]+\.[a-z0-9]+)(?::via:)?(.+)?/i
   api.useLookupCode = function (code) {
     var eventPush = pushable()
 
@@ -370,7 +370,7 @@ exports.init = function (sbot, opts) {
     // begin the search!
     search(addrs.concat(sbot.gossip.peers()))
     function search (peers) {
-      var peer = peers.pop()
+      var peer = peers.shift()
       if (!peer) {
         eventPush.push({ type: 'failure' })
         return eventPush.end()

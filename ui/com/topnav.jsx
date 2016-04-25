@@ -41,7 +41,7 @@ export default class TopNav extends React.Component {
   static IconLink(props) {
     const cls = classNames(props.className||'', 'ctrl flex-fill', props.hint ? ('hint--'+props.hint) : '')
     const count = typeof props.count !== 'undefined' ? <div className="count">{props.count}</div> : ''
-    return <a className={cls} to={props.to} onClick={props.do} data-hint={props.title}>
+    return <a className={cls} href={props.to} onClick={props.do} data-hint={props.title}>
       <i className={'fa fa-'+props.icon} />
       <span className="label">{props.label}</span> {count}
     </a>    

@@ -106,7 +106,7 @@ Some todo ideas for the future.
 
 #### Verifications
 
-It'd be useful if we could bind users' SSBMail identities to other non-web accounts, by sharing proofs of key-ownership through them.
+It'd be useful if we could bind users' SSBMail identities to other non-ssb accounts, by sharing proofs of key-ownership through them.
 This would improve the confidence in user identities.
 
 For instance, you might assert, "I am bob@gmail.com," by publishing the claim on your log.
