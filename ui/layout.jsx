@@ -44,10 +44,17 @@ export default class Layout extends React.Component {
     }
   }
 
-  openMsg(msgKey) {
-    if (msgKey.key)
-      msgKey = msgKey.key
-    app.history.pushState(null, '/msg/' + encodeURIComponent(msgKey))
+  openMsg(e) {
+    var newWindow = false
+    if (e.triggerEvent) {
+      if (e.triggerEvent.button == 1 || (e.triggerEvent.button == 0 && (e.triggerEvent.ctrlKey || e.triggerEvent.metaKey)))
+        newWindow = true
+    }
+
+    var msgKey = (typeof e == 'string') ? e : e.key
+    var url = '/msg/' + encodeURIComponent(msgKey)
+    if (newWindow) window.open('#'+url)
+    else           app.history.pushState(null, url)
   }
 
   openContact(userId) {

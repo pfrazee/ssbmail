@@ -103,7 +103,13 @@ export default class LeftNav extends React.Component {
     // const onSelectChat = id => app.history.pushState(null, '/chat?id='+encodeURIComponent(id))
     if (pathname.indexOf('/profile') === 0)
       chatId = decodeURIComponent(pathname.slice('/pathname'.length))
-    const onSelectChat = id => app.history.pushState(null, '/profile/'+encodeURIComponent(id))
+    const onSelectChat = (id, e) => {
+      const url = '/profile/'+encodeURIComponent(id)
+      if (e.button == 1 || (e.button == 0 && (e.ctrlKey || e.metaKey)))
+        window.open('#'+url)
+      else
+        app.history.pushState(null, url)
+    }
 
     // render
     return <div className="leftnav">
